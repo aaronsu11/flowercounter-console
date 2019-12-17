@@ -29,8 +29,8 @@ function Admin(props) {
   // states and functions
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [miniActive, setMiniActive] = React.useState(false);
-  const [image, setImage] = React.useState(require("assets/img/sidebar-4.jpg"));
-  const [color, setColor] = React.useState("green");
+  const [image, setImage] = React.useState(require("assets/img/sidebar-2.jpg"));
+  const [color, setColor] = React.useState("blue");
   const [bgColor, setBgColor] = React.useState("black");
   // const [hasImage, setHasImage] = React.useState(true);
   const [fixedClasses, setFixedClasses] = React.useState("dropdown");
@@ -45,26 +45,30 @@ function Admin(props) {
       [classes.mainPanelWithPerfectScrollbar]:
         navigator.platform.indexOf("Win") > -1
     });
+    
   // ref for main panel div
   const mainPanel = React.createRef();
   // effect instead of componentDidMount, componentDidUpdate and componentWillUnmount
   React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(mainPanel.current, {
-        suppressScrollX: true,
-        suppressScrollY: false
-      });
-      document.body.style.overflow = "hidden";
-    }
-    window.addEventListener("resize", resizeFunction);
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
+    // double check mainPanel exist due to possible <Redirect/>
+    if (mainPanel.current){
       if (navigator.platform.indexOf("Win") > -1) {
-        ps.destroy();
+        ps = new PerfectScrollbar(mainPanel.current, {
+          suppressScrollX: true,
+          suppressScrollY: false
+        });
+        document.body.style.overflow = "hidden";
       }
-      window.removeEventListener("resize", resizeFunction);
-    };
+      window.addEventListener("resize", resizeFunction);
+  
+      // Specify how to clean up after this effect:
+      return function cleanup() {
+        if (navigator.platform.indexOf("Win") > -1) {
+          ps.destroy();
+        }
+        window.removeEventListener("resize", resizeFunction);
+      };
+    }
   });
   // functions for changeing the states from components
   const handleImageClick = image => {
@@ -150,7 +154,7 @@ function Admin(props) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={"Flower Counter"}
+        logoText={"Creative Tim"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
