@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 // redux actions
-import loginAction from "actions/loginAction";
+import { loginAction } from "actions/authActions";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";

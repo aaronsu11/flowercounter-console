@@ -8,8 +8,10 @@ import ChartistGraph from "react-chartist";
 // import { VectorMap } from "react-jvectormap";
 
 // redux actions
-import addStatsCardAction from "actions/addStatsCardAction";
-import getAllStatsCardsAction from "actions/getAllStatsCardsAction";
+import {
+  addStatsCardAction,
+  getAllStatsCardsAction
+} from "actions/statsCardActions";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";

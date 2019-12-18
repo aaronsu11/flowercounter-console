@@ -1,10 +1,11 @@
 // import firebase from "firebaseConfig";
+import { cardStats } from "variables/general";
 
 // connect to firebase realtime database
 // const databaseRef = firebase.database().ref();
 // const statsCardsRef = databaseRef.child("stats-cards");
 
-const addStatsCardAction = (
+export const addStatsCardAction = (
   statsName,
   statsDescription,
   statsIcon,
@@ -43,4 +44,21 @@ const addStatsCardAction = (
   //   .then(() => dispatch({ type: "addStatsCard" }));
 };
 
-export default addStatsCardAction;
+// connect to firebase realtime database
+// const databaseRef = firebase.database().ref();
+// const statsCardsRef = databaseRef.child("stats-cards");
+
+export const getAllStatsCardsAction = () => async dispatch => {
+  // local dataset
+  dispatch({
+    type: "getAllStatsCards",
+    payload: cardStats || {}
+  });
+  // call API to retrieve all stats card
+  // statsCardsRef.on("value", snapshot => {
+  //   dispatch({
+  //     type: "getAllStatsCards",
+  //     payload: snapshot.val() || {}
+  //   });
+  // });
+};
