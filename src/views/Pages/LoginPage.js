@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+// redux actions
 import loginAction from "actions/loginAction";
 
 // @material-ui/core components
@@ -127,7 +130,7 @@ function LoginPage(props) {
                   size="lg"
                   block
                   onClick={() => {
-                    props.loginAction(email, password);
+                    props.login(email, password);
                   }}
                 >
                   Let{"'"}s Go
@@ -141,9 +144,13 @@ function LoginPage(props) {
   );
 }
 
+LoginPage.propTypes = {
+  login: PropTypes.func
+};
+
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
-  loginAction: (email, password) => dispatch(loginAction(email, password))
+  login: (email, password) => dispatch(loginAction(email, password))
 });
 
 export default connect(

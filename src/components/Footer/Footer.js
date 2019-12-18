@@ -59,15 +59,15 @@ export default function Footer(props) {
         <p className={classes.right}>
           &copy; {1900 + new Date().getYear()}{" "}
           <a
-            href="https://www.creative-tim.com?ref=mdpr-footer"
+            href="http://www.robotics.unsw.edu.au/srv/"
             className={anchor}
             target="_blank"
           >
-            {rtlActive ? "توقيت الإبداعية" : "Creative Tim"}
+            {rtlActive ? "توقيت الإبداعية" : "Smart Robotic Viticulture"}
           </a>
           {rtlActive
             ? ", مصنوعة مع الحب لشبكة الإنترنت أفضل"
-            : ", made with love for a better web"}
+            : ", let's make your vineyard smarter."}
         </p>
       </div>
     </footer>

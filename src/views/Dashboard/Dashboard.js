@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import addStatsCardAction from "actions/addStatsCardAction";
-import getAllStatsCardsAction from "actions/getAllStatsCardsAction";
+import PropTypes from "prop-types";
+
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // react plugin for creating vector maps
 // import { VectorMap } from "react-jvectormap";
+
+// redux actions
+import addStatsCardAction from "actions/addStatsCardAction";
+import getAllStatsCardsAction from "actions/getAllStatsCardsAction";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -52,9 +56,12 @@ const useStyles = makeStyles(styles);
 
 function Dashboard(props) {
   const classes = useStyles();
+  // potential problem with func dependency
+  const { getAllStatsCards } = props;
   useEffect(() => {
-    props.getAllStatsCardsAction();
-  }, []);
+    getAllStatsCards();
+  }, [getAllStatsCards]);
+
   return (
     <div>
       <h3>Vineyard List</h3>
@@ -279,9 +286,13 @@ function Dashboard(props) {
   );
 }
 
+Dashboard.propTypes = {
+  getAllStatsCards: PropTypes.func
+};
+
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
-  addStatsCardAction: (
+  addStatsCard: (
     statsName,
     statsDescription,
     statsIcon,
@@ -303,7 +314,7 @@ const mapDispatchToProps = dispatch => ({
         statsFooterText
       )
     ),
-  getAllStatsCardsAction: () => dispatch(getAllStatsCardsAction())
+  getAllStatsCards: () => dispatch(getAllStatsCardsAction())
 });
 
 export default connect(

@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -106,6 +107,10 @@ function Auth(props) {
     </div>
   );
 }
+
+Auth.propTypes = {
+  authState: PropTypes.objectOf(PropTypes.bool)
+};
 
 const mapStateToProps = state => ({
   ...state

@@ -2,6 +2,7 @@ import React from "react";
 import cx from "classnames";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -45,30 +46,31 @@ function Admin(props) {
       [classes.mainPanelWithPerfectScrollbar]:
         navigator.platform.indexOf("Win") > -1
     });
-    
+
   // ref for main panel div
   const mainPanel = React.createRef();
   // effect instead of componentDidMount, componentDidUpdate and componentWillUnmount
   React.useEffect(() => {
     // double check mainPanel exist due to possible <Redirect/>
-    if (mainPanel.current){
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps = new PerfectScrollbar(mainPanel.current, {
-          suppressScrollX: true,
-          suppressScrollY: false
-        });
-        document.body.style.overflow = "hidden";
-      }
-      window.addEventListener("resize", resizeFunction);
-  
-      // Specify how to clean up after this effect:
-      return function cleanup() {
-        if (navigator.platform.indexOf("Win") > -1) {
-          ps.destroy();
-        }
-        window.removeEventListener("resize", resizeFunction);
-      };
+    let ps_condition =
+      navigator.platform.indexOf("Win") > -1 && mainPanel.current;
+
+    if (ps_condition) {
+      ps = new PerfectScrollbar(mainPanel.current, {
+        suppressScrollX: true,
+        suppressScrollY: false
+      });
+      document.body.style.overflow = "hidden";
     }
+    window.addEventListener("resize", resizeFunction);
+
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      if (ps_condition) {
+        ps.destroy();
+      }
+      window.removeEventListener("resize", resizeFunction);
+    };
   });
   // functions for changeing the states from components
   const handleImageClick = image => {
@@ -146,9 +148,10 @@ function Admin(props) {
     }
   };
 
-  if (!props.authState.loggedIn) {
-    return <Redirect to="/auth" />;
-  }
+  // Protect route, redirect to authentication
+  // if (!props.authState.loggedIn) {
+  //   return <Redirect to="/auth" />;
+  // }
 
   return (
     <div className={classes.wrapper}>
@@ -207,6 +210,10 @@ function Admin(props) {
     </div>
   );
 }
+
+Admin.propTypes = {
+  authState: PropTypes.objectOf(PropTypes.bool)
+};
 
 const mapStateToProps = state => ({ ...state });
 

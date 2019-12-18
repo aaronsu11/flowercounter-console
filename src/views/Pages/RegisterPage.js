@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+// redux actions
 import registerAction from "actions/registerAction";
 
 // @material-ui/core components
@@ -189,7 +192,7 @@ function RegisterPage(props) {
                         round
                         color="primary"
                         onClick={() => {
-                          props.registerAction(name, email, password);
+                          props.register(name, email, password);
                         }}
                       >
                         Get started
@@ -206,9 +209,13 @@ function RegisterPage(props) {
   );
 }
 
+RegisterPage.propTypes = {
+  register: PropTypes.func
+};
+
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
-  registerAction: (name, email, password) =>
+  register: (name, email, password) =>
     dispatch(registerAction(name, email, password))
 });
 
