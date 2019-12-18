@@ -413,6 +413,21 @@ const dataTable = {
   ]
 };
 
+const cardStats = [
+  {
+    title: "Vineyard A",
+    subtitle: "NSW 2000",
+    lastUpdate: new Date(y, m, 1),
+    color: "default"
+  },
+  {
+    title: "Vineyard B",
+    subtitle: "NSW 2001",
+    lastUpdate: new Date(y, m, 1),
+    color: "default"
+  }
+];
+
 export {
   // data for React Big Calendar in Calendar view
   events,
@@ -431,5 +446,7 @@ export {
   rtlWebsite,
   rtlServer,
   // data for datatables.net in DataTables view
-  dataTable
+  dataTable,
+  // data for StatsCard
+  cardStats
 };

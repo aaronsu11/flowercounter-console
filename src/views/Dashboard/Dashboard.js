@@ -18,11 +18,11 @@ import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
 // import ContentCopy from "@material-ui/icons/ContentCopy";
-import Store from "@material-ui/icons/Store";
+// import Store from "@material-ui/icons/Store";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
 import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
+// import DateRange from "@material-ui/icons/DateRange";
+// import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
@@ -41,14 +41,11 @@ import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
+import CardText from "components/Card/CardText.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts";
+import { dailySalesChart } from "variables/charts";
 
 import styles from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.js";
 
@@ -57,7 +54,7 @@ const useStyles = makeStyles(styles);
 function Dashboard(props) {
   const classes = useStyles();
   // potential problem with func dependency
-  const { getAllStatsCards } = props;
+  const { statsCardState, getAllStatsCards } = props;
   useEffect(() => {
     getAllStatsCards();
   }, [getAllStatsCards]);
@@ -67,6 +64,35 @@ function Dashboard(props) {
       <h3>Vineyard List</h3>
       <br />
       <GridContainer>
+        {statsCardState &&
+          statsCardState.statsCardList &&
+          statsCardState.statsCardList.map((prop, key) => {
+            let color = prop.color === "default" ? "success" : prop.color;
+            let lastUpdate =
+              typeof prop.lastUpdate === "string" ||
+              prop.lastUpdate instanceof String
+                ? prop.lastUpdate
+                : prop.lastUpdate.toString();
+            return (
+              <GridItem xs={12} sm={12} md={6} key={key}>
+                <Card>
+                  <CardHeader color={color} text>
+                    <CardText color={color}>
+                      <h4 className={classes.cardSubtitle}>{prop.title}</h4>
+                      <p className="card-category">{prop.subtitle}</p>
+                    </CardText>
+                  </CardHeader>
+                  <CardBody>Click here to add notes...</CardBody>
+                  <CardFooter stats>
+                    <div className={classes.stats}>
+                      <Update />
+                      {lastUpdate}
+                    </div>
+                  </CardFooter>
+                </Card>
+              </GridItem>
+            );
+          })}
         <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>
             <CardHeader color="warning" stats icon>
@@ -90,7 +116,7 @@ function Dashboard(props) {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={6} lg={3}>
+        {/* <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
@@ -123,24 +149,7 @@ function Dashboard(props) {
               </div>
             </CardFooter>
           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={6} lg={3}>
-          <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <i className="fab fa-twitter" />
-              </CardIcon>
-              <p className={classes.cardCategory}>Followers</p>
-              <h3 className={classes.cardTitle}>+245</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Update />
-                Just Updated
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
+        </GridItem> */}
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
@@ -192,101 +201,13 @@ function Dashboard(props) {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart className={classes.cardHover}>
-            <CardHeader color="warning" className={classes.cardHeaderHover}>
-              <ChartistGraph
-                className="ct-chart-white-colors"
-                data={emailsSubscriptionChart.data}
-                type="Bar"
-                options={emailsSubscriptionChart.options}
-                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <div className={classes.cardHoverUnder}>
-                <Tooltip
-                  id="tooltip-top"
-                  title="Refresh"
-                  placement="bottom"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <Button simple color="info" justIcon>
-                    <Refresh className={classes.underChartIcons} />
-                  </Button>
-                </Tooltip>
-                <Tooltip
-                  id="tooltip-top"
-                  title="Change Date"
-                  placement="bottom"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <Button color="transparent" simple justIcon>
-                    <Edit className={classes.underChartIcons} />
-                  </Button>
-                </Tooltip>
-              </div>
-              <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart className={classes.cardHover}>
-            <CardHeader color="danger" className={classes.cardHeaderHover}>
-              <ChartistGraph
-                className="ct-chart-white-colors"
-                data={completedTasksChart.data}
-                type="Line"
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <div className={classes.cardHoverUnder}>
-                <Tooltip
-                  id="tooltip-top"
-                  title="Refresh"
-                  placement="bottom"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <Button simple color="info" justIcon>
-                    <Refresh className={classes.underChartIcons} />
-                  </Button>
-                </Tooltip>
-                <Tooltip
-                  id="tooltip-top"
-                  title="Change Date"
-                  placement="bottom"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <Button color="transparent" simple justIcon>
-                    <Edit className={classes.underChartIcons} />
-                  </Button>
-                </Tooltip>
-              </div>
-              <h4 className={classes.cardTitle}>Completed Tasks</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
       </GridContainer>
     </div>
   );
 }
 
 Dashboard.propTypes = {
+  statsCardState: PropTypes.objectOf(PropTypes.array),
   getAllStatsCards: PropTypes.func
 };
 
