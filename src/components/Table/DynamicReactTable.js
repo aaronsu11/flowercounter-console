@@ -13,7 +13,6 @@ import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
 
 export default function DynamicReactTable(props) {
-  console.log("Passing D");
   const { dataRows, headers } = props.dataTable;
   const [data, setData] = React.useState(
     dataRows.map((prop, key) => {
@@ -22,7 +21,7 @@ export default function DynamicReactTable(props) {
         name: prop[0],
         time: prop[1],
         feature: prop[2],
-        stats: prop[3],
+        stats: prop[3].mean,
         actions: (
           // we've added some custom button actions
           <div className="actions-right">

@@ -7,6 +7,8 @@ import { getVineyardTableAction } from "actions/tableActions";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 // @material-ui/icons
 import ViewList from "@material-ui/icons/ViewList";
 
@@ -55,7 +57,7 @@ function Browser(props) {
             {tableState && tableState.dataTable ? (
               <DynamicReactTable dataTable={tableState.dataTable} />
             ) : (
-              <div></div>
+              <CircularProgress />
             )}
           </CardBody>
         </Card>
