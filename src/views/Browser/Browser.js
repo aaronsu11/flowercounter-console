@@ -33,6 +33,7 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 function Browser(props) {
+  console.log("Passing B");
   const classes = useStyles();
   const { tableState, getVineyardTable } = props;
   useEffect(() => {

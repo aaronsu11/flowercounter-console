@@ -429,7 +429,7 @@ const cardStats = [
 ];
 
 const vineyardList = {
-  headers: ["Name", "Last Update", "Number of Blocks", "Stats"],
+  headers: ["Name", "Last Update", "No. of Blocks", "Stats"],
   dataRows: [
     ["A", "2019-12-19 15:00", "20", "3.5"],
     ["B", "2019-12-19 11:00", "10", "1.2"]

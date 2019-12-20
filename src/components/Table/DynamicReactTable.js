@@ -13,15 +13,16 @@ import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
 
 export default function DynamicReactTable(props) {
+  console.log("Passing D");
   const { dataRows, headers } = props.dataTable;
   const [data, setData] = React.useState(
     dataRows.map((prop, key) => {
       return {
         id: key,
         name: prop[0],
-        position: prop[1],
-        office: prop[2],
-        age: prop[3],
+        time: prop[1],
+        feature: prop[2],
+        stats: prop[3],
         actions: (
           // we've added some custom button actions
           <div className="actions-right">
@@ -35,12 +36,12 @@ export default function DynamicReactTable(props) {
                 alert(
                   "You've clicked LIKE button on \n{ \nName: " +
                     obj.name +
-                    ", \nposition: " +
-                    obj.position +
-                    ", \noffice: " +
-                    obj.office +
-                    ", \nage: " +
-                    obj.age +
+                    ", \ntime: " +
+                    obj.time +
+                    ", \nfeature: " +
+                    obj.feature +
+                    ", \nstats: " +
+                    obj.stats +
                     "\n}."
                 );
               }}
@@ -59,12 +60,12 @@ export default function DynamicReactTable(props) {
                 alert(
                   "You've clicked EDIT button on \n{ \nName: " +
                     obj.name +
-                    ", \nposition: " +
-                    obj.position +
-                    ", \noffice: " +
-                    obj.office +
-                    ", \nage: " +
-                    obj.age +
+                    ", \ntime: " +
+                    obj.time +
+                    ", \nfeature: " +
+                    obj.feature +
+                    ", \nstats: " +
+                    obj.stats +
                     "\n}."
                 );
               }}
@@ -101,29 +102,37 @@ export default function DynamicReactTable(props) {
       };
     })
   );
+  // const columns = headers.map(header => {
+  //   // console.log(header.replace(/^\w/, c => c.toUpperCase()));
+  //   return {
+  //     Header: header.replace(/^\w/, c => c.toUpperCase()),
+  //     accessor: header
+  //   };
+  // });
+
   return (
     <ReactTable
       data={data}
       filterable
       columns={[
         {
-          Header: "Name",
+          Header: headers[0],
           accessor: "name"
         },
         {
-          Header: "Position",
-          accessor: "position"
+          Header: headers[1],
+          accessor: "time"
         },
         {
-          Header: "Office",
-          accessor: "office"
+          Header: headers[2],
+          accessor: "feature"
         },
         {
-          Header: "Age",
-          accessor: "age"
+          Header: headers[3],
+          accessor: "stats"
         },
         {
-          Header: "Actions",
+          Header: "",
           accessor: "actions",
           sortable: false,
           filterable: false
