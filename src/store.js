@@ -6,7 +6,8 @@ import rootReducer from "reducers/rootReducer";
 function configureStore(
   state = {
     authState: {},
-    statsCardState: {}
+    statsCardState: {},
+    tableState: {}
   }
 ) {
   return createStore(rootReducer, state, applyMiddleware(reduxThunk));

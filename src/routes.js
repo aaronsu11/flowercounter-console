@@ -27,6 +27,7 @@ import ValidationForms from "views/Forms/ValidationForms.js";
 import VectorMap from "views/Maps/VectorMap.js";
 import Widgets from "views/Widgets/Widgets.js";
 import Wizard from "views/Forms/Wizard.js";
+import Browser from "views/Browser/Browser.js";
 
 // @material-ui/icons
 import Apps from "@material-ui/icons/Apps";
@@ -37,6 +38,7 @@ import Image from "@material-ui/icons/Image";
 import Place from "@material-ui/icons/Place";
 import Timeline from "@material-ui/icons/Timeline";
 import WidgetsIcon from "@material-ui/icons/Widgets";
+import ViewList from "@material-ui/icons/ViewList";
 
 var dashRoutes = [
   {
@@ -45,6 +47,14 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: DashboardIcon,
     component: Dashboard,
+    layout: "/admin"
+  },
+  {
+    path: "/browser",
+    name: "Browser",
+    rtlName: "Browser",
+    icon: ViewList,
+    component: Browser,
     layout: "/admin"
   },
   {

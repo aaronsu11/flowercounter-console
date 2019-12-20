@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-// react plugin for creating vector maps
-// import { VectorMap } from "react-jvectormap";
-
 // redux actions
 import {
   addStatsCardAction,
   getAllStatsCardsAction
 } from "actions/statsCardActions";
+
+// react plugin for creating charts
+import ChartistGraph from "react-chartist";
+// react plugin for creating vector maps
+// import { VectorMap } from "react-jvectormap";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -209,7 +209,7 @@ function Dashboard(props) {
 }
 
 Dashboard.propTypes = {
-  statsCardState: PropTypes.objectOf(PropTypes.array),
+  statsCardState: PropTypes.object,
   getAllStatsCards: PropTypes.func
 };
 
