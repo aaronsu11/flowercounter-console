@@ -13,15 +13,11 @@ import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
 
 export default function DynamicReactTable(props) {
-  const { dataRows, headers } = props.dataTable;
+  const { dataRows, headers, accessors } = props.dataTable;
   const [data, setData] = React.useState(
     dataRows.map((prop, key) => {
-      return {
+      const dataRow = {
         id: key,
-        name: prop[0],
-        time: prop[1],
-        feature: prop[2],
-        stats: prop[3].mean,
         actions: (
           // we've added some custom button actions
           <div className="actions-right">
@@ -33,15 +29,7 @@ export default function DynamicReactTable(props) {
               onClick={() => {
                 let obj = data.find(o => o.id === key);
                 alert(
-                  "You've clicked LIKE button on \n{ \nName: " +
-                    obj.name +
-                    ", \ntime: " +
-                    obj.time +
-                    ", \nfeature: " +
-                    obj.feature +
-                    ", \nstats: " +
-                    obj.stats +
-                    "\n}."
+                  "You've clicked LIKE button on \n{ \nRow: " + obj.id + "\n}."
                 );
               }}
               color="info"
@@ -57,15 +45,7 @@ export default function DynamicReactTable(props) {
               onClick={() => {
                 let obj = data.find(o => o.id === key);
                 alert(
-                  "You've clicked EDIT button on \n{ \nName: " +
-                    obj.name +
-                    ", \ntime: " +
-                    obj.time +
-                    ", \nfeature: " +
-                    obj.feature +
-                    ", \nstats: " +
-                    obj.stats +
-                    "\n}."
+                  "You've clicked EDIT button on \n{ \nRow: " + obj.id + "\n}."
                 );
               }}
               color="warning"
@@ -99,37 +79,29 @@ export default function DynamicReactTable(props) {
           </div>
         )
       };
+      // extract the accessors from fetched data and dynamically assign to row
+      accessors.map((accessor, key) => {
+        dataRow[accessor] = prop[key];
+        return true;
+      });
+      // modified row
+      return dataRow;
     })
   );
-  // const columns = headers.map(header => {
-  //   // console.log(header.replace(/^\w/, c => c.toUpperCase()));
-  //   return {
-  //     Header: header.replace(/^\w/, c => c.toUpperCase()),
-  //     accessor: header
-  //   };
-  // });
+  const columns = headers.map((header, key) => {
+    // console.log(header.replace(/^\w/, c => c.toUpperCase()));
+    return {
+      Header: header,
+      accessor: accessors[key]
+    };
+  });
 
   return (
     <ReactTable
       data={data}
       filterable
       columns={[
-        {
-          Header: headers[0],
-          accessor: "name"
-        },
-        {
-          Header: headers[1],
-          accessor: "time"
-        },
-        {
-          Header: headers[2],
-          accessor: "feature"
-        },
-        {
-          Header: headers[3],
-          accessor: "stats"
-        },
+        ...columns,
         {
           Header: "",
           accessor: "actions",

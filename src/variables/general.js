@@ -429,10 +429,12 @@ const cardStats = [
 ];
 
 const vineyardList = {
-  headers: ["Name", "Lastest Record", "No. of Blocks", "Stats"],
+  headers: ["Vineyard", "Latest Record", "No. of Blocks", "Stats"],
+  accessors: ["vineyard", "latest_record", "n_block", "stats"],
   dataRows: [
-    ["A", "2019-12-19 15:00", "20", { mean: 3.5 }],
-    ["B", "2019-12-19 11:00", "10", { mean: 1.2 }]
+    ["A", "2019-12-19 15:00", "20", "mean: 3.5"],
+    ["B", "2019-12-19 11:00", "10", "mean: 1.2"],
+    ["Dog", "2019-12-13 9:00", "11", "mean: 6.8"]
   ]
 };
 
