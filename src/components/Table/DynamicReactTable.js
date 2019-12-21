@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
+
+// redux actions
+import { viewBlockTableAction } from "actions/viewActions";
+import { refreshTableAction } from "actions/tableActions";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -12,7 +17,10 @@ import Close from "@material-ui/icons/Close";
 
 import Button from "components/CustomButtons/Button.js";
 
-export default function DynamicReactTable(props) {
+function DynamicReactTable(props) {
+  //  getting redux props
+  const { viewState, viewBlockTable, refreshTable } = props;
+  //  getting component props
   const { dataRows, headers, accessors } = props.dataTable;
   const [data, setData] = React.useState(
     dataRows.map((prop, key) => {
@@ -43,10 +51,20 @@ export default function DynamicReactTable(props) {
               round
               simple
               onClick={() => {
-                let obj = data.find(o => o.id === key);
-                alert(
-                  "You've clicked EDIT button on \n{ \nRow: " + obj.id + "\n}."
-                );
+                // let obj = data.find(o => o.id === key);
+                // alert(
+                //   "You've clicked EDIT button on \n{ \nRow: " + obj.id + "\n}."
+                // );
+                refreshTable();
+                switch (viewState.curView) {
+                  case "vineyardTable":
+                    console.log("view block table");
+                    viewBlockTable(prop[0]);
+                    break;
+                  default:
+                    console.log("loss track");
+                    break;
+                }
               }}
               color="warning"
               className="edit"
@@ -88,6 +106,12 @@ export default function DynamicReactTable(props) {
       return dataRow;
     })
   );
+  useEffect(() => {
+    console.log("Mount");
+    return () => {
+      console.log("Unmount");
+    };
+  }, []);
   const columns = headers.map((header, key) => {
     // console.log(header.replace(/^\w/, c => c.toUpperCase()));
     return {
@@ -122,5 +146,19 @@ DynamicReactTable.defaultProps = {
 };
 
 DynamicReactTable.propTypes = {
-  dataTable: PropTypes.object
+  dataTable: PropTypes.object,
+  viewState: PropTypes.object,
+  refreshTable: PropTypes.func,
+  viewBlockTable: PropTypes.func
 };
+
+const mapStateToProps = state => ({ ...state });
+const mapDispatchToProps = dispatch => ({
+  refreshTable: () => dispatch(refreshTableAction()),
+  viewBlockTable: vineyard => dispatch(viewBlockTableAction(vineyard))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DynamicReactTable);

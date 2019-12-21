@@ -1,6 +1,11 @@
-import { vineyardList } from "variables/general.js";
+import { vineyardList, blockList } from "variables/general.js";
 
 const apiURL = "http://localhost:5000/";
+
+export const refreshTableAction = () => ({
+  type: "refreshTable",
+  payload: {}
+});
 
 export const getVineyardTableAction = token => async dispatch => {
   // local dataset
@@ -41,8 +46,9 @@ export const getBlockTableAction = (vineyard, token) => async dispatch => {
   // local dataset
   dispatch({
     type: "getBlockTable",
-    payload: {}
+    payload: blockList || {}
   });
+  return Promise.resolve();
 };
 
 export const getDatasetTableAction = (block, token) => async dispatch => {

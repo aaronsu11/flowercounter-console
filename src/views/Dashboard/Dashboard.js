@@ -8,6 +8,8 @@ import {
   getAllStatsCardsAction
 } from "actions/statsCardActions";
 
+import { getVineyardTableAction } from "actions/tableActions";
+
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // react plugin for creating vector maps
@@ -15,14 +17,15 @@ import ChartistGraph from "react-chartist";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Tooltip from "@material-ui/core/Tooltip";
-import Icon from "@material-ui/core/Icon";
+// import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
 // import ContentCopy from "@material-ui/icons/ContentCopy";
 // import Store from "@material-ui/icons/Store";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
-import Warning from "@material-ui/icons/Warning";
+// import Warning from "@material-ui/icons/Warning";
 // import DateRange from "@material-ui/icons/DateRange";
 // import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
@@ -39,10 +42,10 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 // import Table from "components/Table/Table.js";
 import Button from "components/CustomButtons/Button.js";
-import Danger from "components/Typography/Danger.js";
+// import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
+// import CardIcon from "components/Card/CardIcon.js";
 import CardText from "components/Card/CardText.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
@@ -56,46 +59,60 @@ const useStyles = makeStyles(styles);
 function Dashboard(props) {
   const classes = useStyles();
   // potential problem with func dependency
-  const { statsCardState, getAllStatsCards } = props;
+  const { tableState, getVineyardTable } = props;
   useEffect(() => {
-    getAllStatsCards();
-  }, [getAllStatsCards]);
+    // console.log("getting table");
+    getVineyardTable(0);
+  }, [getVineyardTable]);
+
+  // const { statsCardState, getAllStatsCards } = props;
+  // useEffect(() => {
+  //   getAllStatsCards();
+  // }, [getAllStatsCards]);
 
   return (
     <div>
       <h3>Vineyard List</h3>
       <br />
       <GridContainer>
-        {statsCardState &&
-          statsCardState.statsCardList &&
-          statsCardState.statsCardList.map((prop, key) => {
-            let color = prop.color === "default" ? "success" : prop.color;
-            let lastUpdate =
-              typeof prop.lastUpdate === "string" ||
-              prop.lastUpdate instanceof String
-                ? prop.lastUpdate
-                : prop.lastUpdate.toString();
+        {tableState && tableState.dataTable ? (
+          tableState.dataTable.dataRows.map((prop, key) => {
+            // let color = prop.color === "default" ? "success" : prop.color;
+            let color = "success";
+            let latestRecord =
+              typeof prop[1] === "string" || prop[1] instanceof String
+                ? prop[1]
+                : prop[1].toString();
             return (
-              <GridItem xs={12} sm={12} md={6} key={key}>
+              <GridItem xs={12} sm={6} md={6} lg={3} key={key}>
                 <Card>
                   <CardHeader color={color} text>
                     <CardText color={color}>
-                      <h4 className={classes.cardSubtitle}>{prop.title}</h4>
-                      <p className="card-category">{prop.subtitle}</p>
+                      <h4 className={classes.cardSubtitle}>{prop[0]}</h4>
+                      {/* <p className="card-category">{prop.subtitle}</p> */}
                     </CardText>
                   </CardHeader>
-                  <CardBody>Click here to add notes...</CardBody>
+                  <CardBody>
+                    <h3 className={classes.cardCategory}>
+                      {prop[2]} <small>Blocks</small>
+                    </h3>
+                    <br />
+                    <p>Click here to add notes...</p>
+                  </CardBody>
                   <CardFooter stats>
                     <div className={classes.stats}>
                       <Update />
-                      {lastUpdate}
+                      {latestRecord}
                     </div>
                   </CardFooter>
                 </Card>
               </GridItem>
             );
-          })}
-        <GridItem xs={12} sm={6} md={6} lg={3}>
+          })
+        ) : (
+          <CircularProgress />
+        )}
+        {/* <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
@@ -117,7 +134,7 @@ function Dashboard(props) {
               </div>
             </CardFooter>
           </Card>
-        </GridItem>
+        </GridItem> */}
         {/* <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>
             <CardHeader color="success" stats icon>
@@ -209,12 +226,15 @@ function Dashboard(props) {
 }
 
 Dashboard.propTypes = {
+  tableState: PropTypes.object,
+  getVineyardTable: PropTypes.func,
   statsCardState: PropTypes.object,
   getAllStatsCards: PropTypes.func
 };
 
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
+  getVineyardTable: token => dispatch(getVineyardTableAction(token)),
   addStatsCard: (
     statsName,
     statsDescription,

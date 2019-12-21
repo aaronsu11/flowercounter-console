@@ -7,7 +7,8 @@ function configureStore(
   state = {
     authState: {},
     statsCardState: {},
-    tableState: {}
+    tableState: {},
+    viewState: { curView: "vineyardTable" }
   }
 ) {
   return createStore(rootReducer, state, applyMiddleware(reduxThunk));

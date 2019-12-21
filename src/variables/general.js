@@ -429,12 +429,22 @@ const cardStats = [
 ];
 
 const vineyardList = {
-  headers: ["Vineyard", "Latest Record", "No. of Blocks", "Stats"],
-  accessors: ["vineyard", "latest_record", "n_block", "stats"],
+  headers: ["Vineyard", "Latest Update", "No. of Blocks"],
+  accessors: ["vineyard", "latest_update", "n_block"],
   dataRows: [
-    ["A", "2019-12-19 15:00", "20", "mean: 3.5"],
-    ["B", "2019-12-19 11:00", "10", "mean: 1.2"],
-    ["Dog", "2019-12-13 9:00", "11", "mean: 6.8"]
+    ["Apple", "2019-12-19 15:00", "20"],
+    ["Banana", "2019-12-19 11:00", "10"],
+    ["Dog", "2019-12-13 9:00", "11"]
+  ]
+};
+
+const blockList = {
+  headers: ["Block", "Latest Update", "Variety", "Current EL Stage"],
+  accessors: ["block", "latest_update", "variety", "cur_el_stage"],
+  dataRows: [
+    ["A1", "2019-12-21 15:03", "Chardonnay", "15"],
+    ["B2", "2019-12-11 11:35", "Chardonnay", "16"],
+    ["C3", "2019-12-13 9:21", "Shiraz", "13"]
   ]
 };
 
@@ -459,5 +469,6 @@ export {
   dataTable,
   // data for StatsCard
   cardStats,
-  vineyardList
+  vineyardList,
+  blockList
 };

@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 // redux actions
-import { getVineyardTableAction } from "actions/tableActions";
+import {
+  refreshTableAction,
+  getVineyardTableAction,
+  getBlockTableAction
+} from "actions/tableActions";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -29,6 +33,9 @@ const styles = {
     ...cardTitle,
     marginTop: "15px",
     marginBottom: "0px"
+  },
+  dynamicTableRows: {
+    textAlign: "center"
   }
 };
 
@@ -36,11 +43,20 @@ const useStyles = makeStyles(styles);
 
 function Browser(props) {
   const classes = useStyles();
-  const { tableState, getVineyardTable } = props;
+  const { tableState, viewState, getVineyardTable, getBlockTable } = props;
+
   useEffect(() => {
-    // console.log("getting table");
-    getVineyardTable(0);
-  }, [getVineyardTable]);
+    switch (viewState.curView) {
+      case "blockTable":
+        console.log("getting block table");
+        getBlockTable(viewState.curVineyard, 0);
+        break;
+      default:
+        console.log("default to vineyard table");
+        getVineyardTable(0);
+        break;
+    }
+  }, [viewState, getVineyardTable, getBlockTable]);
 
   return (
     <GridContainer>
@@ -52,7 +68,7 @@ function Browser(props) {
             </CardIcon>
             <h4 className={classes.cardIconTitle}>List</h4>
           </CardHeader>
-          <CardBody>
+          <CardBody className={classes.dynamicTableRows}>
             {tableState && tableState.dataTable ? (
               <DynamicReactTable dataTable={tableState.dataTable} />
             ) : (
@@ -67,12 +83,19 @@ function Browser(props) {
 
 Browser.propTypes = {
   tableState: PropTypes.object,
-  getVineyardTable: PropTypes.func
+  viewState: PropTypes.object,
+  refreshTable: PropTypes.func,
+  getVineyardTable: PropTypes.func,
+  getBlockTable: PropTypes.func,
+  viewVineyardTable: PropTypes.func
 };
 
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
-  getVineyardTable: token => dispatch(getVineyardTableAction(token))
+  refreshTable: () => dispatch(refreshTableAction()),
+  getVineyardTable: token => dispatch(getVineyardTableAction(token)),
+  getBlockTable: (vineyard, token) =>
+    dispatch(getBlockTableAction(vineyard, token))
 });
 
 export default connect(
