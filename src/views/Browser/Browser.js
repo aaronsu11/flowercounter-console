@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -48,11 +48,17 @@ function Browser(props) {
   const {
     tableState,
     viewState,
+    // refreshTable,
     getVineyardTable,
     getBlockTable,
     getDatasetTable,
     getImageTable
   } = props;
+
+  const [firstMount, setMount] = useState(true);
+  useEffect(() => {
+    setMount(false);
+  }, []);
 
   useEffect(() => {
     let token = 0;
@@ -98,7 +104,7 @@ function Browser(props) {
             <h4 className={classes.cardIconTitle}>List</h4>
           </CardHeader>
           <CardBody className={classes.dynamicTableRows}>
-            {tableState && tableState.dataTable ? (
+            {!firstMount && tableState && tableState.dataTable ? (
               <DynamicReactTable dataTable={tableState.dataTable} />
             ) : (
               <CircularProgress />
