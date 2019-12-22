@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 // redux actions
-import { viewBlockTableAction } from "actions/viewActions";
+import {
+  viewBlockTableAction,
+  viewDatasetTableAction,
+  viewImageTableAction
+} from "actions/viewActions";
 import { refreshTableAction } from "actions/tableActions";
 
 // react component for creating dynamic tables
@@ -19,7 +23,13 @@ import Button from "components/CustomButtons/Button.js";
 
 function DynamicReactTable(props) {
   //  getting redux props
-  const { viewState, viewBlockTable, refreshTable } = props;
+  const {
+    viewState,
+    refreshTable,
+    viewBlockTable,
+    viewDatasetTable,
+    viewImageTable
+  } = props;
   //  getting component props
   const { dataRows, headers, accessors } = props.dataTable;
   const [data, setData] = React.useState(
@@ -44,33 +54,43 @@ function DynamicReactTable(props) {
               className="like"
             >
               <Favorite />
-            </Button>{" "}
+            </Button>
             {/* use this button to add a edit kind of action */}
-            <Button
-              justIcon
-              round
-              simple
-              onClick={() => {
-                // let obj = data.find(o => o.id === key);
-                // alert(
-                //   "You've clicked EDIT button on \n{ \nRow: " + obj.id + "\n}."
-                // );
-                refreshTable();
-                switch (viewState.curView) {
-                  case "vineyardTable":
-                    console.log("view block table");
-                    viewBlockTable(prop[0]);
-                    break;
-                  default:
-                    console.log("loss track");
-                    break;
-                }
-              }}
-              color="warning"
-              className="edit"
-            >
-              <Dvr />
-            </Button>{" "}
+            {viewState.curView !== "imageTable" ? (
+              <Button
+                justIcon
+                round
+                simple
+                onClick={() => {
+                  // let obj = data.find(o => o.id === key);
+                  // alert(
+                  //   "You've clicked EDIT button on \n{ \nRow: " + obj.id + "\n}."
+                  // );
+                  refreshTable();
+                  switch (viewState.curView) {
+                    case "vineyardTable":
+                      console.log("view block table");
+                      viewBlockTable(prop[0]);
+                      break;
+                    case "blockTable":
+                      console.log("view dataset table");
+                      viewDatasetTable(prop[0]);
+                      break;
+                    case "datasetTable":
+                      console.log("view image table");
+                      viewImageTable(prop[0]);
+                      break;
+                    default:
+                      console.log("loss track");
+                      break;
+                  }
+                }}
+                color="warning"
+                className="edit"
+              >
+                <Dvr />
+              </Button>
+            ) : null}
             {/* use this button to remove the data row */}
             <Button
               justIcon
@@ -93,7 +113,7 @@ function DynamicReactTable(props) {
               className="remove"
             >
               <Close />
-            </Button>{" "}
+            </Button>
           </div>
         )
       };
@@ -149,13 +169,17 @@ DynamicReactTable.propTypes = {
   dataTable: PropTypes.object,
   viewState: PropTypes.object,
   refreshTable: PropTypes.func,
-  viewBlockTable: PropTypes.func
+  viewBlockTable: PropTypes.func,
+  viewDatasetTable: PropTypes.func,
+  viewImageTable: PropTypes.func
 };
 
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
   refreshTable: () => dispatch(refreshTableAction()),
-  viewBlockTable: vineyard => dispatch(viewBlockTableAction(vineyard))
+  viewBlockTable: vineyard => dispatch(viewBlockTableAction(vineyard)),
+  viewDatasetTable: block => dispatch(viewDatasetTableAction(block)),
+  viewImageTable: dataset => dispatch(viewImageTableAction(dataset))
 });
 
 export default connect(

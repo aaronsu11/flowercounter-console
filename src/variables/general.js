@@ -432,7 +432,7 @@ const vineyardList = {
   headers: ["Vineyard", "Latest Update", "No. of Blocks"],
   accessors: ["vineyard", "latest_update", "n_block"],
   dataRows: [
-    ["Apple", "2019-12-19 15:00", "20"],
+    ["Apple", "2019-12-21 15:03", "3"],
     ["Banana", "2019-12-19 11:00", "10"],
     ["Dog", "2019-12-13 9:00", "11"]
   ]
@@ -442,9 +442,29 @@ const blockList = {
   headers: ["Block", "Latest Update", "Variety", "Current EL Stage"],
   accessors: ["block", "latest_update", "variety", "cur_el_stage"],
   dataRows: [
-    ["A1", "2019-12-21 15:03", "Chardonnay", "15"],
+    ["A1", "2019-12-21 15:03", "Chardonnay", "18"],
     ["B2", "2019-12-11 11:35", "Chardonnay", "16"],
     ["C3", "2019-12-13 9:21", "Shiraz", "13"]
+  ]
+};
+
+const datasetList = {
+  headers: ["Dataset", "Date", "EL Stage"],
+  accessors: ["dataset", "date", "el_stage"],
+  dataRows: [
+    ["DS1", "2019-12-21 15:03", "18"],
+    ["DS2", "2019-12-14 07:35", "11"],
+    ["DS3", "2019-12-17 19:21", "17"]
+  ]
+};
+
+const imageList = {
+  headers: ["Name", "Preview", "Estimate"],
+  accessors: ["name", "preview", "estimate"],
+  dataRows: [
+    ["1.jpg", "firebase://1.jpg", "22"],
+    ["2.jpg", "firebase://2.jpg", "25"],
+    ["3.jpg", "firebase://3.jpg", "19"]
   ]
 };
 
@@ -470,5 +490,7 @@ export {
   // data for StatsCard
   cardStats,
   vineyardList,
-  blockList
+  blockList,
+  datasetList,
+  imageList
 };

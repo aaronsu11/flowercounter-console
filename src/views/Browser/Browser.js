@@ -6,7 +6,9 @@ import PropTypes from "prop-types";
 import {
   refreshTableAction,
   getVineyardTableAction,
-  getBlockTableAction
+  getBlockTableAction,
+  getDatasetTableAction,
+  getImageTableAction
 } from "actions/tableActions";
 
 // @material-ui/core components
@@ -43,20 +45,47 @@ const useStyles = makeStyles(styles);
 
 function Browser(props) {
   const classes = useStyles();
-  const { tableState, viewState, getVineyardTable, getBlockTable } = props;
+  const {
+    tableState,
+    viewState,
+    getVineyardTable,
+    getBlockTable,
+    getDatasetTable,
+    getImageTable
+  } = props;
 
   useEffect(() => {
+    let token = 0;
     switch (viewState.curView) {
       case "blockTable":
         console.log("getting block table");
-        getBlockTable(viewState.curVineyard, 0);
+        getBlockTable(token, viewState.curVineyard);
+        break;
+      case "datasetTable":
+        console.log("getting dataset table");
+        getDatasetTable(token, viewState.curVineyard, viewState.curBlock);
+        break;
+      case "imageTable":
+        console.log("getting image table");
+        getImageTable(
+          token,
+          viewState.curVineyard,
+          viewState.curBlock,
+          viewState.curDataset
+        );
         break;
       default:
         console.log("default to vineyard table");
-        getVineyardTable(0);
+        getVineyardTable(token);
         break;
     }
-  }, [viewState, getVineyardTable, getBlockTable]);
+  }, [
+    viewState,
+    getVineyardTable,
+    getBlockTable,
+    getDatasetTable,
+    getImageTable
+  ]);
 
   return (
     <GridContainer>
@@ -87,15 +116,20 @@ Browser.propTypes = {
   refreshTable: PropTypes.func,
   getVineyardTable: PropTypes.func,
   getBlockTable: PropTypes.func,
-  viewVineyardTable: PropTypes.func
+  getDatasetTable: PropTypes.func,
+  getImageTable: PropTypes.func
 };
 
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
   refreshTable: () => dispatch(refreshTableAction()),
   getVineyardTable: token => dispatch(getVineyardTableAction(token)),
-  getBlockTable: (vineyard, token) =>
-    dispatch(getBlockTableAction(vineyard, token))
+  getBlockTable: (token, vineyard) =>
+    dispatch(getBlockTableAction(token, vineyard)),
+  getDatasetTable: (token, vineyard, block) =>
+    dispatch(getDatasetTableAction(token, vineyard, block)),
+  getImageTable: (token, vineyard, block, dataset) =>
+    dispatch(getImageTableAction(token, vineyard, block, dataset))
 });
 
 export default connect(

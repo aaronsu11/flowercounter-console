@@ -9,6 +9,12 @@ export default (state = {}, action) => {
     case "getBlockTable":
       console.log("getting ", action.payload);
       return { ...state, dataTable: action.payload };
+    case "getDatasetTable":
+      console.log("getting ", action.payload);
+      return { ...state, dataTable: action.payload };
+    case "getImageTable":
+      console.log("getting ", action.payload);
+      return { ...state, dataTable: action.payload };
     default:
       return state;
   }
