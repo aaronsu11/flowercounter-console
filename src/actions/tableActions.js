@@ -9,29 +9,29 @@ export const refreshTableAction = () => ({
 
 export const getVineyardTableAction = token => async dispatch => {
   // local dataset
-  dispatch({
-    type: "getVineyardTable",
-    payload: vineyardList || {}
-  });
-  return Promise.resolve();
+  // dispatch({
+  //   type: "getVineyardTable",
+  //   payload: vineyardList || {}
+  // });
+  // return Promise.resolve();
 
-  // call flower counter API to retrieve all vineyard
-  // fetch(apiURL + "list", {
-  //   method: "post",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({
-  //     userid: token,
-  //     type: "vineyardls"
-  //   })
-  // })
-  //   .then(response => response.json())
-  //   .then(dataTable => {
-  //     console.log(dataTable);
-  //     dispatch({
-  //       type: "getVineyardTable",
-  //       payload: dataTable || {}
-  //     });
-  //   });
+  // call flower counter API to retrieve all vineyards
+  fetch(apiURL + "list", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userid: token,
+      type: "vineyardls"
+    })
+  })
+    .then(response => response.json())
+    .then(dataTable => {
+      console.log(dataTable);
+      dispatch({
+        type: "getVineyardTable",
+        payload: dataTable || {}
+      });
+    });
 
   // call firebase API to retrieve all stats card
   // statsCardsRef.on("value", snapshot => {
@@ -44,11 +44,30 @@ export const getVineyardTableAction = token => async dispatch => {
 
 export const getBlockTableAction = (vineyard, token) => async dispatch => {
   // local dataset
-  dispatch({
-    type: "getBlockTable",
-    payload: blockList || {}
-  });
-  return Promise.resolve();
+  // dispatch({
+  //   type: "getBlockTable",
+  //   payload: blockList || {}
+  // });
+  // return Promise.resolve();
+
+  // call flower counter API to retrieve all blocks
+  fetch(apiURL + "list", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userid: token,
+      type: "vineyardls",
+      vineyard: vineyard
+    })
+  })
+    .then(response => response.json())
+    .then(dataTable => {
+      console.log(dataTable);
+      dispatch({
+        type: "getBlockTable",
+        payload: dataTable || {}
+      });
+    });
 };
 
 export const getDatasetTableAction = (block, token) => async dispatch => {
