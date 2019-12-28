@@ -1,6 +1,9 @@
-import * as firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore"; // Cloud Firestore
+import "firebase/database"; // Realtime Database
+import "firebase/auth";
 
-const firebaseConfig = {
+const config = {
   apiKey: "AIzaSyBmbEYCRih5N8ls-UYgv26OnAz67IDR8gk",
   authDomain: "flower-counter.firebaseapp.com",
   databaseURL: "https://flower-counter.firebaseio.com",
@@ -11,4 +14,7 @@ const firebaseConfig = {
   measurementId: "G-4HSDYZE7SQ"
 };
 
-export default firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(config);
+firebase.firestore();
+
+export default firebase;
