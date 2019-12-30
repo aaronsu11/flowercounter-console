@@ -19,16 +19,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
-import { Provider } from "react-redux";
-import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import { Provider, useSelector } from "react-redux";
+import { ReactReduxFirebaseProvider, isLoaded } from "react-redux-firebase";
 import { createFirestoreInstance } from "redux-firestore";
 
 import store from "store";
 import firebase from "config/firebaseConfig";
 import { rrfConfig } from "config/config";
 
+import PrivateRoute from "components/PrivateRoute/PrivateRoute";
 import AuthLayout from "layouts/Auth.js";
-import RtlLayout from "layouts/RTL.js";
+// import RtlLayout from "layouts/RTL.js";
 import AdminLayout from "layouts/Admin.js";
 
 import "assets/scss/material-dashboard-pro-react.scss?v=1.8.0";
@@ -43,16 +44,28 @@ const rrfProps = {
   createFirestoreInstance // <- needed if using firestore
 };
 
+function AuthIsLoaded({ children }) {
+  const auth = useSelector(state => state.firebase.auth);
+  if (!isLoaded(auth)) return <div>Loading...</div>;
+  return children;
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
       <Router history={hist}>
-        <Switch>
-          <Route path="/rtl" component={RtlLayout} />
-          <Route path="/auth" component={AuthLayout} />
-          <Route path="/admin" component={AdminLayout} />
-          <Redirect from="/" to="/admin/dashboard" />
-        </Switch>
+        <AuthIsLoaded>
+          <Switch>
+            {/* <PrivateRoute path="/rtl">
+              <RtlLayout />
+            </PrivateRoute> */}
+            <Route path="/auth" component={AuthLayout} />
+            <PrivateRoute path="/admin">
+              <AdminLayout />
+            </PrivateRoute>
+            <Redirect from="/" to="/admin/dashboard" />
+          </Switch>
+        </AuthIsLoaded>
       </Router>
     </ReactReduxFirebaseProvider>
   </Provider>,

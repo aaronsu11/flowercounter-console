@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import reduxThunk from "redux-thunk";
-import { getFirestore } from "redux-firestore";
+// import { getFirestore } from "redux-firestore";
 import { getFirebase } from "react-redux-firebase";
 
 import rootReducer from "reducers/rootReducer";
@@ -23,7 +23,7 @@ const store = createStore(
   initialState,
   composeEnhancers(
     // Firebase store enhancers
-    applyMiddleware(reduxThunk.withExtraArgument({ getFirebase, getFirestore }))
+    applyMiddleware(reduxThunk.withExtraArgument({ getFirebase }))
   )
 );
 

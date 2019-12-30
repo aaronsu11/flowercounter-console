@@ -120,7 +120,7 @@ function RegisterPage(props) {
                             <Face className={classes.inputAdornmentIcon} />
                           </InputAdornment>
                         ),
-                        placeholder: "First Name..."
+                        placeholder: "Name..."
                       }}
                     />
                     <CustomInput

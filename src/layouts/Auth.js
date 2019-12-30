@@ -23,7 +23,10 @@ import pricing from "assets/img/bg-pricing.jpeg";
 const useStyles = makeStyles(styles);
 
 function Auth(props) {
-  const { ...rest } = props;
+  const {
+    firebase: { auth },
+    ...rest
+  } = props;
   // ref for the wrapper div
   const wrapper = React.createRef();
   // styles
@@ -85,7 +88,8 @@ function Auth(props) {
     return activeRoute;
   };
 
-  if (props.authState.loggedIn) {
+  // Direct to dashboard once logged in
+  if (auth.uid) {
     return <Redirect to="/admin" />;
   }
 
@@ -109,7 +113,8 @@ function Auth(props) {
 }
 
 Auth.propTypes = {
-  authState: PropTypes.objectOf(PropTypes.bool)
+  firebase: PropTypes.object,
+  authState: PropTypes.object
 };
 
 const mapStateToProps = state => ({

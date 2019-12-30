@@ -1,7 +1,10 @@
 import React from "react";
 import classNames from "classnames";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // import { Manager, Target, Popper } from "react-popper";
+
+import { logoutAction } from "actions/authActions";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,7 +31,7 @@ import styles from "assets/jss/material-dashboard-pro-react/components/adminNavb
 
 const useStyles = makeStyles(styles);
 
-export default function HeaderLinks(props) {
+function HeaderLinks(props) {
   const [openNotification, setOpenNotification] = React.useState(null);
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
@@ -49,7 +52,12 @@ export default function HeaderLinks(props) {
     }
   };
   const handleCloseProfile = () => {
+    console.log("click");
     setOpenProfile(null);
+  };
+  const handleClickLogout = () => {
+    setOpenProfile(null);
+    props.logout();
   };
   const classes = useStyles();
   const { rtlActive } = props;
@@ -277,7 +285,7 @@ export default function HeaderLinks(props) {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleClickLogout}
                       className={dropdownItem}
                     >
                       {rtlActive ? "الخروج" : "Log out"}
@@ -294,5 +302,16 @@ export default function HeaderLinks(props) {
 }
 
 HeaderLinks.propTypes = {
-  rtlActive: PropTypes.bool
+  rtlActive: PropTypes.bool,
+  logout: PropTypes.func
 };
+
+const mapStateToProps = state => ({ ...state });
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logoutAction())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HeaderLinks);

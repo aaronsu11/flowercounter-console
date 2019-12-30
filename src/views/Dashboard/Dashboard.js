@@ -59,10 +59,14 @@ const useStyles = makeStyles(styles);
 function Dashboard(props) {
   const classes = useStyles();
   // potential problem with func dependency
-  const { tableState, getVineyardTable } = props;
+  const {
+    firebase: { auth },
+    tableState,
+    getVineyardTable
+  } = props;
   useEffect(() => {
     // console.log("getting table");
-    getVineyardTable(0);
+    getVineyardTable(auth.uid);
   }, [getVineyardTable]);
 
   // const { statsCardState, getAllStatsCards } = props;
@@ -226,6 +230,7 @@ function Dashboard(props) {
 }
 
 Dashboard.propTypes = {
+  firebase: PropTypes.object,
   tableState: PropTypes.object,
   getVineyardTable: PropTypes.func,
   statsCardState: PropTypes.object,

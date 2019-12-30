@@ -3,6 +3,38 @@
 // const databaseRef = firebase.database().ref();
 // const userDetailsRef = databaseRef.child("user-details");
 
+export const registerAction = (name, email, password) => async (
+  dispatch,
+  getState,
+  { getFirebase }
+) => {
+  const firebase = getFirebase();
+
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(res => {
+      return firebase
+        .firestore()
+        .collection("users")
+        .doc(res.user.uid)
+        .set({ userName: name });
+    })
+    .then(() => {
+      // userDetailsRef.push().set({ userId: user.user.uid, userName: name });
+      dispatch({
+        type: "register"
+      });
+    })
+    .catch(function(error) {
+      alert(error);
+      dispatch({
+        type: "registerError",
+        error
+      });
+    });
+};
+
 export const loginAction = (email, password) => async (
   dispatch,
   getState,
@@ -10,32 +42,40 @@ export const loginAction = (email, password) => async (
 ) => {
   const firebase = getFirebase();
   firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(function(user) {
+    .login({ email, password })
+    .then(user => {
       console.log(user);
       dispatch({
-        type: "login",
-        payload: true
+        type: "login"
       });
     })
-    .catch(function(error) {
+    .catch(error => {
       alert(error);
+      dispatch({
+        type: "loginError",
+        error
+      });
     });
 };
 
-export const registerAction = (name, email, password) => async dispatch => {
-  // firebase
-  //   .auth()
-  //   .createUserWithEmailAndPassword(email, password)
-  //   .then(function(user) {
-  //     userDetailsRef.push().set({ userId: user.user.uid, userName: name });
-  //     dispatch({
-  //       type: "register",
-  //       payload: true
-  //     });
-  //   })
-  //   .catch(function(error) {
-  //     alert(error);
-  //   });
+export const logoutAction = () => async (
+  dispatch,
+  getState,
+  { getFirebase }
+) => {
+  const firebase = getFirebase();
+  firebase
+    .logout()
+    .then(() => {
+      dispatch({
+        type: "logout"
+      });
+    })
+    .catch(error => {
+      alert(error);
+      dispatch({
+        type: "logoutError",
+        error
+      });
+    });
 };

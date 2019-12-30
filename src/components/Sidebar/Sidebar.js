@@ -21,7 +21,7 @@ import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
 
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.js";
 
-import avatar from "assets/img/faces/card-profile2-square.jpg";
+import avatar from "assets/img/faces/profile-placeholder.png";
 
 var ps;
 
@@ -362,7 +362,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={rtlActive ? "تانيا أندرو" : "Aaron Su"}
+                primary={rtlActive ? "تانيا أندرو" : this.props.profile.userName}
                 secondary={
                   <b
                     className={
@@ -397,7 +397,7 @@ class Sidebar extends React.Component {
                     />
                   </NavLink>
                 </ListItem>
-                <ListItem className={classes.collapseItem}>
+                {/* <ListItem className={classes.collapseItem}>
                   <NavLink
                     to="#"
                     className={
@@ -415,7 +415,7 @@ class Sidebar extends React.Component {
                       className={collapseItemText}
                     />
                   </NavLink>
-                </ListItem>
+                </ListItem> */}
                 <ListItem className={classes.collapseItem}>
                   <NavLink
                     to="#"
@@ -565,6 +565,7 @@ Sidebar.defaultProps = {
 };
 
 Sidebar.propTypes = {
+  profile: PropTypes.object,
   classes: PropTypes.object.isRequired,
   bgColor: PropTypes.oneOf(["white", "black", "blue"]),
   rtlActive: PropTypes.bool,

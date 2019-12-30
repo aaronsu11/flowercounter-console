@@ -1,17 +1,32 @@
 export default (state = {}, action) => {
   switch (action.type) {
     case "register":
-      console.log("register ", action.payload);
+      console.log("registered ");
       return {
         ...state,
-        loggedIn: action.payload
+        loggedIn: true,
+        authError: null
       };
     case "login":
-      console.log("login is ", action.payload);
+      console.log("logged in");
       return {
         ...state,
-        loggedIn: action.payload
+        loggedIn: true,
+        authError: null
       };
+    case "logout":
+      console.log("logged out");
+      return {
+        ...state,
+        loggedIn: false,
+        authError: null
+      };
+    case "registerError":
+      return { ...state, authError: action.error };
+    case "loginError":
+      return { ...state, authError: action.error };
+    case "logoutError":
+      return { ...state, authError: action.error };
     default:
       return state;
   }

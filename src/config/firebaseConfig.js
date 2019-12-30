@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore"; // Cloud Firestore
-import "firebase/database"; // Realtime Database
+// import "firebase/database"; // Realtime Database
 import "firebase/auth";
 
 const config = {

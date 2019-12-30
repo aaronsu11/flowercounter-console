@@ -26,7 +26,7 @@ var ps;
 const useStyles = makeStyles(styles);
 
 function Admin(props) {
-  const { ...rest } = props;
+  const { firebase, ...rest } = props;
   // states and functions
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [miniActive, setMiniActive] = React.useState(false);
@@ -148,16 +148,12 @@ function Admin(props) {
     }
   };
 
-  // Protect route, redirect to authentication
-  // if (!props.authState.loggedIn) {
-  //   return <Redirect to="/auth" />;
-  // }
-
   return (
     <div className={classes.wrapper}>
       <Sidebar
+        profile={firebase.profile}
         routes={routes}
-        logoText={"Creative Tim"}
+        logoText={"Flower Counter"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
@@ -212,7 +208,8 @@ function Admin(props) {
 }
 
 Admin.propTypes = {
-  authState: PropTypes.objectOf(PropTypes.bool)
+  firebase: PropTypes.object,
+  authState: PropTypes.object
 };
 
 const mapStateToProps = state => ({ ...state });
