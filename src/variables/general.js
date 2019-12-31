@@ -429,8 +429,8 @@ const cardStats = [
 ];
 
 const vineyardList = {
-  headers: ["Vineyard", "Latest Update", "No. of Blocks"],
-  accessors: ["vineyard", "latest_update", "n_block"],
+  headers: ["Name", "Latest Update", "No. of Blocks"],
+  accessors: ["name", "latest_update", "n_block"],
   dataRows: [
     ["Apple", "2019-12-21 15:03", "3"],
     ["Banana", "2019-12-19 11:00", "10"],
@@ -439,8 +439,8 @@ const vineyardList = {
 };
 
 const blockList = {
-  headers: ["Block", "Latest Update", "Variety", "Current EL Stage"],
-  accessors: ["block", "latest_update", "variety", "cur_el_stage"],
+  headers: ["Name", "Latest Update", "Variety", "Current EL Stage"],
+  accessors: ["name", "latest_update", "variety", "cur_el_stage"],
   dataRows: [
     ["A1", "2019-12-21 15:03", "Chardonnay", "18"],
     ["B2", "2019-12-11 11:35", "Chardonnay", "16"],
@@ -449,8 +449,8 @@ const blockList = {
 };
 
 const datasetList = {
-  headers: ["Dataset", "Date", "EL Stage"],
-  accessors: ["dataset", "date", "el_stage"],
+  headers: ["Name", "Date", "EL Stage"],
+  accessors: ["name", "date", "el_stage"],
   dataRows: [
     ["DS1", "2019-12-21 15:03", "18"],
     ["DS2", "2019-12-14 07:35", "11"],

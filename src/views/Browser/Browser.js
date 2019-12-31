@@ -27,6 +27,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardHeader from "components/Card/CardHeader.js";
 import DynamicReactTable from "components/Table/DynamicReactTable";
+import DynamicBreadcrumbs from "components/Breadcrumbs/DynamicBreadcrumbs";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.js";
 
@@ -37,6 +38,8 @@ const styles = {
     marginBottom: "0px"
   },
   dynamicTableRows: {
+    alignItems: "center",
+    justifyContent: "center",
     textAlign: "center"
   }
 };
@@ -101,7 +104,9 @@ function Browser(props) {
             <CardIcon color="success">
               <ViewList />
             </CardIcon>
-            <h4 className={classes.cardIconTitle}>List</h4>
+            <div className={classes.cardIconTitle}>
+              <DynamicBreadcrumbs />
+            </div>
           </CardHeader>
           <CardBody className={classes.dynamicTableRows}>
             {!firstMount && tableState && tableState.dataTable ? (

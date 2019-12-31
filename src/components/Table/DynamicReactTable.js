@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -18,7 +18,6 @@ import Dvr from "@material-ui/icons/Dvr";
 import Favorite from "@material-ui/icons/Favorite";
 import Close from "@material-ui/icons/Close";
 // core components
-
 import Button from "components/CustomButtons/Button.js";
 
 function DynamicReactTable(props) {
@@ -126,12 +125,12 @@ function DynamicReactTable(props) {
       return dataRow;
     })
   );
-  useEffect(() => {
-    console.log("Mount");
-    return () => {
-      console.log("Unmount");
-    };
-  }, []);
+  // useEffect(() => {
+  //   console.log("Mount");
+  //   return () => {
+  //     console.log("Unmount");
+  //   };
+  // }, []);
   const columns = headers.map((header, key) => {
     // console.log(header.replace(/^\w/, c => c.toUpperCase()));
     return {
