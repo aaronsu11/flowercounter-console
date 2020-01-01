@@ -39,8 +39,8 @@ const styles = {
   },
   dynamicTableRows: {
     alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center"
+    justifyContent: "center"
+    // textAlign: "center"
   }
 };
 
