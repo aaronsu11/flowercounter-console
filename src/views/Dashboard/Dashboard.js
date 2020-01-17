@@ -67,7 +67,7 @@ function Dashboard(props) {
   useEffect(() => {
     // console.log("getting table");
     getVineyardTable(auth.uid);
-  }, [getVineyardTable]);
+  }, [getVineyardTable, auth.uid]);
 
   // const { statsCardState, getAllStatsCards } = props;
   // useEffect(() => {
@@ -100,8 +100,8 @@ function Dashboard(props) {
                     <h3 className={classes.cardCategory}>
                       {prop[2]} <small>Blocks</small>
                     </h3>
-                    <br />
-                    <p>Click here to add notes...</p>
+                    {/* <br />
+                    <p>Click here to add notes...</p> */}
                   </CardBody>
                   <CardFooter stats>
                     <div className={classes.stats}>

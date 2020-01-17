@@ -4,6 +4,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+import { logoutAction } from "actions/authActions";
+
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -26,7 +28,11 @@ var ps;
 const useStyles = makeStyles(styles);
 
 function Admin(props) {
-  const { firebase, ...rest } = props;
+  const {
+    firebase: { auth, profile },
+    authState: { homeURL },
+    ...rest
+  } = props;
   // states and functions
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [miniActive, setMiniActive] = React.useState(false);
@@ -100,6 +106,10 @@ function Admin(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  const handleLogout = () => {
+    props.logout();
+    return <Redirect to="/auth" />;
+  };
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
@@ -148,10 +158,17 @@ function Admin(props) {
     }
   };
 
+  //Direct user back to home URL with profile
+  let userHomeURL = homeURL;
+  if (auth.uid && profile.isLoaded) {
+    userHomeURL =
+      homeURL + `?uid=${auth.uid}&email=${auth.email}&name=${profile.userName}`;
+  }
   return (
     <div className={classes.wrapper}>
       <Sidebar
-        profile={firebase.profile}
+        profile={profile}
+        homeURL={userHomeURL}
         routes={routes}
         logoText={"Flower Counter"}
         logo={logo}
@@ -176,6 +193,7 @@ function Admin(props) {
           <div className={classes.content}>
             <div className={classes.container}>
               <Switch>
+                <Route exact path="/admin/logout" render={handleLogout} />
                 {getRoutes(routes)}
                 <Redirect from="/admin" to="/admin/dashboard" />
               </Switch>
@@ -209,12 +227,16 @@ function Admin(props) {
 
 Admin.propTypes = {
   firebase: PropTypes.object,
-  authState: PropTypes.object
+  authState: PropTypes.object,
+  logout: PropTypes.func
 };
 
 const mapStateToProps = state => ({ ...state });
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logoutAction())
+});
 
 export default connect(
   mapStateToProps,
-  {}
+  mapDispatchToProps
 )(Admin);

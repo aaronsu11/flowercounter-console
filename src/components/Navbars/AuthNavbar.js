@@ -38,7 +38,7 @@ export default function AuthNavbar(props) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   };
   const classes = useStyles();
-  const { color, brandText } = props;
+  const { color, brandText, homeURL } = props;
   const appBarClasses = cx({
     [" " + classes[color]]: color
   });
@@ -71,7 +71,7 @@ export default function AuthNavbar(props) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <NavLink
-          to={"/auth/register-page"}
+          to={"/auth/register-page/console"}
           className={cx(classes.navLink, {
             [classes.navLinkActive]: activeRoute("/auth/register-page")
           })}
@@ -86,7 +86,7 @@ export default function AuthNavbar(props) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <NavLink
-          to={"/auth/login-page"}
+          to={"/auth/login-page/console"}
           className={cx(classes.navLink, {
             [classes.navLinkActive]: activeRoute("/auth/login-page")
           })}
@@ -121,15 +121,23 @@ export default function AuthNavbar(props) {
       <Toolbar className={classes.container}>
         <Hidden smDown>
           <div className={classes.flex}>
-            <Button href="#" className={classes.title} color="transparent">
+            <Button
+              href={homeURL}
+              className={classes.title}
+              color="transparent"
+            >
               {brandText}
             </Button>
           </div>
         </Hidden>
         <Hidden mdUp>
           <div className={classes.flex}>
-            <Button href="#" className={classes.title} color="transparent">
-              MD Pro React
+            <Button
+              href={homeURL}
+              className={classes.title}
+              color="transparent"
+            >
+              Flower Counter
             </Button>
           </div>
         </Hidden>
@@ -170,5 +178,6 @@ export default function AuthNavbar(props) {
 
 AuthNavbar.propTypes = {
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
-  brandText: PropTypes.string
+  brandText: PropTypes.string,
+  homeURL: PropTypes.string
 };

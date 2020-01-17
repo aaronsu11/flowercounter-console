@@ -3,7 +3,7 @@
 // const databaseRef = firebase.database().ref();
 // const userDetailsRef = databaseRef.child("user-details");
 
-export const registerAction = (name, email, password) => async (
+export const registerAction = (source, name, email, password) => async (
   dispatch,
   getState,
   { getFirebase }
@@ -23,7 +23,8 @@ export const registerAction = (name, email, password) => async (
     .then(() => {
       // userDetailsRef.push().set({ userId: user.user.uid, userName: name });
       dispatch({
-        type: "register"
+        type: "register",
+        payload: source
       });
     })
     .catch(function(error) {
@@ -35,7 +36,7 @@ export const registerAction = (name, email, password) => async (
     });
 };
 
-export const loginAction = (email, password) => async (
+export const loginAction = (source, email, password) => async (
   dispatch,
   getState,
   { getFirebase }
@@ -46,7 +47,8 @@ export const loginAction = (email, password) => async (
     .then(user => {
       console.log(user);
       dispatch({
-        type: "login"
+        type: "login",
+        payload: source
       });
     })
     .catch(error => {

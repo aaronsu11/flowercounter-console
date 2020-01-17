@@ -5,6 +5,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         loggedIn: true,
+        source: action.payload,
         authError: null
       };
     case "login":
@@ -12,6 +13,7 @@ export default (state = {}, action) => {
       return {
         ...state,
         loggedIn: true,
+        source: action.payload,
         authError: null
       };
     case "logout":

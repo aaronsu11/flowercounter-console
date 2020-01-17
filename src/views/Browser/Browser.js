@@ -49,6 +49,7 @@ const useStyles = makeStyles(styles);
 function Browser(props) {
   const classes = useStyles();
   const {
+    firebase: { auth },
     tableState,
     viewState,
     // refreshTable,
@@ -64,7 +65,7 @@ function Browser(props) {
   }, []);
 
   useEffect(() => {
-    let token = 0;
+    let token = auth.uid;
     switch (viewState.curView) {
       case "blockTable":
         console.log("getting block table");
@@ -89,6 +90,7 @@ function Browser(props) {
         break;
     }
   }, [
+    auth.uid,
     viewState,
     getVineyardTable,
     getBlockTable,
@@ -122,6 +124,7 @@ function Browser(props) {
 }
 
 Browser.propTypes = {
+  firebase: PropTypes.object,
   tableState: PropTypes.object,
   viewState: PropTypes.object,
   refreshTable: PropTypes.func,

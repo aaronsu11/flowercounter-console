@@ -43,6 +43,7 @@ function LoginPage(props) {
   const onPasswordChange = password => {
     setPassword(password);
   };
+
   return (
     <div className={classes.container}>
       <GridContainer justify="center">
@@ -130,7 +131,7 @@ function LoginPage(props) {
                   size="lg"
                   block
                   onClick={() => {
-                    props.login(email, password);
+                    props.login(props.match.params.source, email, password);
                   }}
                 >
                   Let{"'"}s Go
@@ -145,12 +146,14 @@ function LoginPage(props) {
 }
 
 LoginPage.propTypes = {
-  login: PropTypes.func
+  login: PropTypes.func,
+  match: PropTypes.object
 };
 
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
-  login: (email, password) => dispatch(loginAction(email, password))
+  login: (source, email, password) =>
+    dispatch(loginAction(source, email, password))
 });
 
 export default connect(

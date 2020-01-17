@@ -24,7 +24,8 @@ const useStyles = makeStyles(styles);
 
 function Auth(props) {
   const {
-    firebase: { auth },
+    firebase: { auth, profile },
+    authState: { source, homeURL },
     ...rest
   } = props;
   // ref for the wrapper div
@@ -70,7 +71,7 @@ function Auth(props) {
     }
   };
   const getActiveRoute = routes => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "SRV Flower Counter";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].views);
@@ -89,13 +90,26 @@ function Auth(props) {
   };
 
   // Direct to dashboard once logged in
-  if (auth.uid) {
-    return <Redirect to="/admin" />;
+  if (auth.uid && profile.isLoaded) {
+    console.log(props.firebase);
+    if (source === "home") {
+      console.log("From Home");
+      window.location =
+        homeURL +
+        `?uid=${auth.uid}&email=${auth.email}&name=${profile.userName}`;
+    } else {
+      console.log("From Console");
+      return <Redirect to="/admin" />;
+    }
   }
 
   return (
     <div>
-      <AuthNavbar brandText={getActiveRoute(routes)} {...rest} />
+      <AuthNavbar
+        brandText={getActiveRoute(routes)}
+        homeURL={homeURL}
+        {...rest}
+      />
       <div className={classes.wrapper} ref={wrapper}>
         <div
           className={classes.fullPage}
@@ -103,7 +117,7 @@ function Auth(props) {
         >
           <Switch>
             {getRoutes(routes)}
-            <Redirect from="/auth" to="/auth/login-page" />
+            <Redirect from="/auth" to="/auth/login-page/console" />
           </Switch>
           <Footer white />
         </div>

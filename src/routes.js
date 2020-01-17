@@ -92,7 +92,7 @@ var dashRoutes = [
         layout: "/admin"
       },
       {
-        path: "/login-page",
+        path: "/login-page/:source",
         name: "Login Page",
         rtlName: "هعذاتسجيل الدخول",
         mini: "L",
@@ -101,7 +101,7 @@ var dashRoutes = [
         layout: "/auth"
       },
       {
-        path: "/register-page",
+        path: "/register-page/:source",
         name: "Register Page",
         rtlName: "تسجيل",
         mini: "R",

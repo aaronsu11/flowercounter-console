@@ -468,15 +468,15 @@ class Sidebar extends React.Component {
     var brand = (
       <div className={logoClasses}>
         <a
-          href="https://www.creative-tim.com?ref=mdpr-sidebar"
-          target="_blank"
+          href={this.props.homeURL}
+          // target="_blank"
           className={logoMini}
         >
           <img src={logo} alt="logo" className={classes.img} />
         </a>
         <a
-          href="https://www.creative-tim.com?ref=mdpr-sidebar"
-          target="_blank"
+          href={this.props.homeURL}
+          // target="_blank"
           className={logoNormal}
         >
           {logoText}
@@ -566,6 +566,7 @@ Sidebar.defaultProps = {
 
 Sidebar.propTypes = {
   profile: PropTypes.object,
+  homeURL: PropTypes.string,
   classes: PropTypes.object.isRequired,
   bgColor: PropTypes.oneOf(["white", "black", "blue"]),
   rtlActive: PropTypes.bool,
