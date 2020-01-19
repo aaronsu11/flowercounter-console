@@ -46,7 +46,7 @@ const rrfProps = {
 
 function AuthIsLoaded({ children }) {
   const auth = useSelector(state => state.firebase.auth);
-  if (!isLoaded(auth)) return <div>Loading...</div>;
+  if (!isLoaded(auth)) return <div>Loading, please wait...</div>;
   return children;
 }
 
@@ -63,7 +63,8 @@ ReactDOM.render(
             <PrivateRoute path="/admin">
               <AdminLayout />
             </PrivateRoute>
-            <Redirect from="/" to="/admin/dashboard" />
+            <Redirect exact from="/" to="/admin/dashboard" />
+            <Redirect to="/auth/error-page" />
           </Switch>
         </AuthIsLoaded>
       </Router>

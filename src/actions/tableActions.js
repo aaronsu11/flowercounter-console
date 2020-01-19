@@ -1,6 +1,6 @@
 // import {vineyardList,blockList,datasetList,imageList} from "variables/general.js";
 
-const apiURL = "http://localhost:5000/";
+const apiURL = "http://flower-counter.appspot.com/";
 
 export const refreshTableAction = () => ({
   type: "refreshTable",

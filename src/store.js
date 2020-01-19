@@ -12,7 +12,7 @@ const composeEnhancers =
     : compose;
 
 const initialState = {
-  authState: { homeURL: "http://localhost:3001/" },
+  authState: { homeURL: "http://flowercounter.yieldestimation.com/" },
   statsCardState: {},
   tableState: {},
   viewState: { curView: "vineyardTable" }

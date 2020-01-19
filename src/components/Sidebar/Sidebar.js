@@ -111,6 +111,11 @@ class Sidebar extends React.Component {
       if (prop.redirect) {
         return null;
       }
+      // Prevent auth pages to show up on dashboard
+      // TODO
+      if (prop.layout === "/auth") {
+        return null;
+      }
       if (prop.collapse) {
         var st = {};
         st[prop["state"]] = !this.state[prop.state];
