@@ -1,3 +1,4 @@
+import React from "react";
 // import {vineyardList,blockList,datasetList,imageList} from "variables/general.js";
 
 const apiURL = "http://flower-counter.appspot.com/";
@@ -111,7 +112,7 @@ export const getImageTableAction = (
   //   type: "getImageTable",
   //   payload: imageList || {}
   // });
-  console.log(dataset);
+
   // call flower counter API to retrieve all blocks
   fetch(apiURL + "list", {
     method: "post",
@@ -126,9 +127,22 @@ export const getImageTableAction = (
   })
     .then(response => response.json())
     .then(dataTable => {
+      let i = dataTable.accessors.indexOf("preview");
+      let imageTable = dataTable;
+      imageTable.dataRows = dataTable.dataRows.map(dataRow => {
+        let imageRow = dataRow;
+        imageRow[i] = (
+          <img
+            src={dataRow[i]}
+            alt="max100% x 50"
+            style={{ height: "50px", maxWidth: "100%" }}
+          />
+        );
+        return imageRow;
+      });
       dispatch({
         type: "getImageTable",
-        payload: dataTable || {}
+        payload: imageTable || {}
       });
     });
 };

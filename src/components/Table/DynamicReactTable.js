@@ -77,7 +77,7 @@ function DynamicReactTable(props) {
                       break;
                     case "datasetTable":
                       console.log("view image table");
-                      viewImageTable(prop[3]); //access the hidden batchid
+                      viewImageTable(prop[6]); //access the hidden batchid
                       break;
                     default:
                       console.log("loss track");
