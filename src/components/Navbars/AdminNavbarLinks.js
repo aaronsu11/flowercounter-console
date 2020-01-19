@@ -19,7 +19,7 @@ import Divider from "@material-ui/core/Divider";
 
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
-import Notifications from "@material-ui/icons/Notifications";
+// import Notifications from "@material-ui/icons/Notifications";
 import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 
@@ -32,17 +32,17 @@ import styles from "assets/jss/material-dashboard-pro-react/components/adminNavb
 const useStyles = makeStyles(styles);
 
 function HeaderLinks(props) {
-  const [openNotification, setOpenNotification] = React.useState(null);
-  const handleClickNotification = event => {
-    if (openNotification && openNotification.contains(event.target)) {
-      setOpenNotification(null);
-    } else {
-      setOpenNotification(event.currentTarget);
-    }
-  };
-  const handleCloseNotification = () => {
-    setOpenNotification(null);
-  };
+  // const [openNotification, setOpenNotification] = React.useState(null);
+  // const handleClickNotification = event => {
+  //   if (openNotification && openNotification.contains(event.target)) {
+  //     setOpenNotification(null);
+  //   } else {
+  //     setOpenNotification(event.currentTarget);
+  //   }
+  // };
+  // const handleCloseNotification = () => {
+  //   setOpenNotification(null);
+  // };
   const [openProfile, setOpenProfile] = React.useState(null);
   const handleClickProfile = event => {
     if (openProfile && openProfile.contains(event.target)) {
@@ -125,7 +125,7 @@ function HeaderLinks(props) {
           </span>
         </Hidden>
       </Button>
-      <div className={managerClasses}>
+      {/* <div className={managerClasses}>
         <Button
           color="transparent"
           justIcon
@@ -220,7 +220,7 @@ function HeaderLinks(props) {
             </Grow>
           )}
         </Popper>
-      </div>
+      </div> */}
 
       <div className={managerClasses}>
         <Button

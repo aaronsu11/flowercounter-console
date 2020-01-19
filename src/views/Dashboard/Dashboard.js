@@ -11,14 +11,14 @@ import {
 import { getVineyardTableAction } from "actions/tableActions";
 
 // react plugin for creating charts
-import ChartistGraph from "react-chartist";
+// import ChartistGraph from "react-chartist";
 // react plugin for creating vector maps
 // import { VectorMap } from "react-jvectormap";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Tooltip from "@material-ui/core/Tooltip";
+// import Tooltip from "@material-ui/core/Tooltip";
 // import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
@@ -29,10 +29,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 // import DateRange from "@material-ui/icons/DateRange";
 // import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Refresh from "@material-ui/icons/Refresh";
-import Edit from "@material-ui/icons/Edit";
+// import ArrowUpward from "@material-ui/icons/ArrowUpward";
+// import AccessTime from "@material-ui/icons/AccessTime";
+// import Refresh from "@material-ui/icons/Refresh";
+// import Edit from "@material-ui/icons/Edit";
 // import Place from "@material-ui/icons/Place";
 // import ArtTrack from "@material-ui/icons/ArtTrack";
 // import Language from "@material-ui/icons/Language";
@@ -41,7 +41,7 @@ import Edit from "@material-ui/icons/Edit";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 // import Table from "components/Table/Table.js";
-import Button from "components/CustomButtons/Button.js";
+// import Button from "components/CustomButtons/Button.js";
 // import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -50,7 +50,7 @@ import CardText from "components/Card/CardText.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import { dailySalesChart } from "variables/charts";
+// import { dailySalesChart } from "variables/charts";
 
 import styles from "assets/jss/material-dashboard-pro-react/views/dashboardStyle.js";
 
@@ -174,7 +174,7 @@ function Dashboard(props) {
           </Card>
         </GridItem> */}
       </GridContainer>
-      <GridContainer>
+      {/* <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart className={classes.cardHover}>
             <CardHeader color="info" className={classes.cardHeaderHover}>
@@ -224,7 +224,7 @@ function Dashboard(props) {
             </CardFooter>
           </Card>
         </GridItem>
-      </GridContainer>
+      </GridContainer> */}
     </div>
   );
 }

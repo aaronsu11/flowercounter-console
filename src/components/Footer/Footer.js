@@ -35,25 +35,25 @@ export default function Footer(props) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a href="#home" className={block}>
+              <a href={props.homeURL} target="_blank" className={block}>
                 {rtlActive ? "الصفحة الرئيسية" : "Home"}
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
-              <a href="#company" className={block}>
+              <a href="http://www.robotics.unsw.edu.au/srv/" target="_blank" className={block}>
                 {rtlActive ? "شركة" : "Company"}
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
-              <a href="#portfolio" className={block}>
-                {rtlActive ? "بعدسة" : "Portfolio"}
+              <a href="#about" className={block}>
+                {rtlActive ? "بعدسة" : "About"}
               </a>
             </ListItem>
-            <ListItem className={classes.inlineBlock}>
+            {/* <ListItem className={classes.inlineBlock}>
               <a href="#blog" className={block}>
                 {rtlActive ? "مدونة" : "Blog"}
               </a>
-            </ListItem>
+            </ListItem> */}
           </List>
         </div>
         <p className={classes.right}>
@@ -77,5 +77,6 @@ export default function Footer(props) {
 Footer.propTypes = {
   fluid: PropTypes.bool,
   white: PropTypes.bool,
-  rtlActive: PropTypes.bool
+  rtlActive: PropTypes.bool,
+  homeURL: PropTypes.string
 };

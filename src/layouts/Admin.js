@@ -215,7 +215,7 @@ function Admin(props) {
             </Switch>
           </div>
         )}
-        {getRoute() ? <Footer fluid /> : null}
+        {getRoute() ? <Footer fluid homeURL={userHomeURL} /> : null}
         <FixedPlugin
           handleImageClick={handleImageClick}
           handleColorClick={handleColorClick}
