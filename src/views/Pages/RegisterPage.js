@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import queryString from "query-string";
 
 // redux actions
 import { registerAction } from "actions/authActions";
@@ -39,6 +40,10 @@ function RegisterPage(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [checked, setChecked] = React.useState([]);
+  // Parse URL query or default to "console"
+  const [source] = React.useState(
+    queryString.parse(props.location.search).source || "console"
+  );
   const handleToggle = value => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -70,20 +75,20 @@ function RegisterPage(props) {
               <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={5}>
                   <InfoArea
-                    title="Marketing"
-                    description="We've created the marketing campaign of the website. It was a very interesting collaboration."
-                    icon={Timeline}
-                    iconColor="rose"
-                  />
-                  <InfoArea
-                    title="Fully Coded in HTML5"
-                    description="We've developed the website with HTML5 and CSS3. The client has access to the code using GitHub."
+                    title="Responsive Interface"
+                    description="Upload images and get processed results in real-time"
                     icon={Code}
                     iconColor="primary"
                   />
                   <InfoArea
-                    title="Built Audience"
-                    description="There is also a Fully Customizable CMS Admin Dashboard for this product."
+                    title="Database interaction"
+                    description="Log-in to your console, enjoy seamless interactions with your data and generate reports"
+                    icon={Timeline}
+                    iconColor="rose"
+                  />
+                  <InfoArea
+                    title="Customizable"
+                    description="Contact us for fully customizable Image Processing Algorithm and Admin Dashboard"
                     icon={Group}
                     iconColor="info"
                   />
@@ -192,7 +197,11 @@ function RegisterPage(props) {
                         round
                         color="primary"
                         onClick={() => {
-                          props.register(name, email, password);
+                          if (checked) {
+                            props.register(source, name, email, password);
+                          } else {
+                            alert("Please agree to the terms and conditions");
+                          }
                         }}
                       >
                         Get started
@@ -210,13 +219,14 @@ function RegisterPage(props) {
 }
 
 RegisterPage.propTypes = {
-  register: PropTypes.func
+  register: PropTypes.func,
+  location: PropTypes.object
 };
 
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
-  register: (name, email, password) =>
-    dispatch(registerAction(name, email, password))
+  register: (source, name, email, password) =>
+    dispatch(registerAction(source, name, email, password))
 });
 
 export default connect(

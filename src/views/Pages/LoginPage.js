@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import queryString from "query-string";
 
 // redux actions
 import { loginAction } from "actions/authActions";
@@ -33,6 +34,11 @@ function LoginPage(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  // Parse URL query or default to "console"
+  const [source] = React.useState(
+    queryString.parse(props.location.search).source || "console"
+  );
+
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
@@ -42,6 +48,14 @@ function LoginPage(props) {
   };
   const onPasswordChange = password => {
     setPassword(password);
+  };
+  const handleLogin = () => {
+    props.login(source, email, password);
+  };
+  const handleKeyPress = key => {
+    if (key === "Enter") {
+      handleLogin();
+    }
   };
 
   return (
@@ -112,6 +126,7 @@ function LoginPage(props) {
                   }}
                   inputProps={{
                     onChange: e => onPasswordChange(e.target.value),
+                    onKeyPress: e => handleKeyPress(e.key),
                     endAdornment: (
                       <InputAdornment position="end">
                         <Icon className={classes.inputAdornmentIcon}>
@@ -130,9 +145,7 @@ function LoginPage(props) {
                   simple
                   size="lg"
                   block
-                  onClick={() => {
-                    props.login(props.match.params.source, email, password);
-                  }}
+                  onClick={handleLogin}
                 >
                   Let{"'"}s Go
                 </Button>
@@ -147,7 +160,8 @@ function LoginPage(props) {
 
 LoginPage.propTypes = {
   login: PropTypes.func,
-  match: PropTypes.object
+  match: PropTypes.object,
+  location: PropTypes.object
 };
 
 const mapStateToProps = state => ({ ...state });

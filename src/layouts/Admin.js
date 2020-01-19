@@ -193,7 +193,15 @@ function Admin(props) {
           <div className={classes.content}>
             <div className={classes.container}>
               <Switch>
-                <Route exact path="/admin/logout" render={handleLogout} />
+                <Route
+                  exact
+                  path="/admin/logout"
+                  render={() => {
+                    // Handle external logout request
+                    handleLogout();
+                    window.location = homeURL;
+                  }}
+                />
                 {getRoutes(routes)}
                 <Redirect from="/admin" to="/admin/dashboard" />
               </Switch>

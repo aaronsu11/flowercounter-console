@@ -117,7 +117,7 @@ function Auth(props) {
         >
           <Switch>
             {getRoutes(routes)}
-            <Redirect from="/auth" to="/auth/login-page/console" />
+            <Redirect from="/auth" to="/auth/login-page" />
           </Switch>
           <Footer white />
         </div>
