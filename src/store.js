@@ -15,7 +15,12 @@ const initialState = {
   authState: { homeURL: "http://flowercounter.yieldestimation.com/" },
   statsCardState: {},
   tableState: {},
-  viewState: { curView: "vineyardTable" }
+  viewState: {
+    curView: "vineyardTable",
+    curVineyard: "",
+    curBlock: "",
+    curDataset: ""
+  }
 };
 
 const store = createStore(

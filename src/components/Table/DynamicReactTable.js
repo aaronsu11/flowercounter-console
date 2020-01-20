@@ -39,7 +39,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function DynamicReactTable(props) {
   //  getting redux props
   const {
-    viewState,
+    viewState: { curView, curVineyard, curBlock, curDataset },
     firebase: { auth },
     refreshTable,
     deleteRecord,
@@ -52,7 +52,7 @@ function DynamicReactTable(props) {
 
   const handleViewChange = dataRow => {
     refreshTable();
-    switch (viewState.curView) {
+    switch (curView) {
       case "vineyardTable":
         console.log("view block table");
         viewBlockTable(dataRow[0]);
@@ -72,25 +72,34 @@ function DynamicReactTable(props) {
   };
 
   const handleDelete = () => {
-    console.log(dataRows[rowKey]);
-    let newData = data;
-    newData.find((o, i) => {
-      if (o.id === rowKey) {
-        // here you should add some custom code so you can delete the data
-        // from this component and from your server as well
-        newData.splice(i, 1);
-        return true;
-      }
-      return false;
-    });
-    setData([...newData]);
-    //TODO
-    let target = {
-      uid: auth.uid,
-      type: viewState.curView,
-      name: dataRows[rowKey][0]
-    };
-    deleteRecord(target);
+    if (dataRows[rowKey]) {
+      // Delete table row display
+      let newData = data;
+      newData.find((o, i) => {
+        if (o.id === rowKey) {
+          // here you should add some custom code so you can delete the data
+          // from this component and from your server as well
+          newData.splice(i, 1);
+          return true;
+        }
+        return false;
+      });
+      setData([...newData]);
+      // Delete record on server
+      let i = accessors.indexOf("name");
+      let target = {
+        uid: auth.uid,
+        type: curView,
+        vineyard: curVineyard,
+        block: curBlock,
+        dataset: curDataset,
+        name: dataRows[rowKey][i]
+      };
+      deleteRecord(target);
+    } else {
+      alert("Error, reloading");
+      refreshTable();
+    }
     setModal(false);
   };
 
@@ -122,7 +131,7 @@ function DynamicReactTable(props) {
               <Favorite />
             </Button>
             {/* use this button to add a edit kind of action */}
-            {/* {viewState.curView !== "imageTable" ? (
+            {/* {curView !== "imageTable" ? (
               <Button
                 justIcon
                 round
@@ -249,7 +258,7 @@ function DynamicReactTable(props) {
             className={classes.modalBody}
           >
             <h5>
-              Are you sure you want to delete {viewState.curView.split("T", 1)}{" "}
+              Are you sure you want to delete {curView.split("T", 1)}{" "}
               <b>{dataRows[rowKey] ? dataRows[rowKey][0] : null}</b>?
             </h5>
           </DialogContent>

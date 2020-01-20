@@ -148,23 +148,18 @@ export const getImageTableAction = (
 };
 
 export const deleteRecordAction = target => async dispatch => {
-  //TODO
-  const { uid, type } = target;
-  console.log(target);
-  dispatch({
-    type: "deleteRecord"
-  });
-  // call flower counter API to retrieve all vineyards
-  // fetch(apiURL + "list", {
-  //   method: "post",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({
-  //     userid: uid,
-  //     type: type
-  //   })
-  // }).then(() => {
-  //   dispatch({
-  //     type: "deleteRecord"
-  //   });
+  // dispatch({
+  //   type: "deleteRecord"
   // });
+  // call flower counter API to retrieve all vineyards
+  fetch(apiURL + "delete", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(target)
+  }).then(() => {
+    dispatch({
+      type: "deleteRecord",
+      payload: target.name
+    });
+  });
 };
