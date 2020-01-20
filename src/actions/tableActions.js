@@ -2,6 +2,7 @@ import React from "react";
 // import {vineyardList,blockList,datasetList,imageList} from "variables/general.js";
 
 const apiURL = "http://flower-counter.appspot.com/";
+// const apiURL = "http://localhost:5000/";
 
 export const refreshTableAction = () => ({
   type: "refreshTable",
@@ -152,14 +153,18 @@ export const deleteRecordAction = target => async dispatch => {
   //   type: "deleteRecord"
   // });
   // call flower counter API to retrieve all vineyards
+  console.log(target);
   fetch(apiURL + "delete", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(target)
-  }).then(() => {
-    dispatch({
-      type: "deleteRecord",
-      payload: target.name
+  })
+    .then(response => response.json())
+    .then(info => {
+      console.log(info);
+      dispatch({
+        type: "deleteRecord",
+        payload: target.name
+      });
     });
-  });
 };

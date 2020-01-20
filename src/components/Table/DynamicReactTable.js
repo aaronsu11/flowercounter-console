@@ -87,13 +87,15 @@ function DynamicReactTable(props) {
       setData([...newData]);
       // Delete record on server
       let i = accessors.indexOf("name");
+      let id =
+        curView === "datasetTable" ? dataRows[rowKey][6] : dataRows[rowKey][i];
       let target = {
         uid: auth.uid,
-        type: curView,
+        type: curView.split("T", 1)[0],
         vineyard: curVineyard,
         block: curBlock,
         dataset: curDataset,
-        name: dataRows[rowKey][i]
+        name: id
       };
       deleteRecord(target);
     } else {
