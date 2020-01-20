@@ -37,7 +37,7 @@ function Admin(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [miniActive, setMiniActive] = React.useState(false);
   const [image, setImage] = React.useState(require("assets/img/sidebar-2.jpg"));
-  const [color, setColor] = React.useState("blue");
+  const [color, setColor] = React.useState("green");
   const [bgColor, setBgColor] = React.useState("black");
   // const [hasImage, setHasImage] = React.useState(true);
   const [fixedClasses, setFixedClasses] = React.useState("dropdown");

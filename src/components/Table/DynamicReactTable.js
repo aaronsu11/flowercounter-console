@@ -13,12 +13,27 @@ import { refreshTableAction } from "actions/tableActions";
 // react component for creating dynamic tables
 import ReactTable from "react-table";
 
+// material-ui components
+import { makeStyles } from "@material-ui/core/styles";
+import Slide from "@material-ui/core/Slide";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 // @material-ui/icons
-import Dvr from "@material-ui/icons/Dvr";
+// import Dvr from "@material-ui/icons/Dvr";
 import Favorite from "@material-ui/icons/Favorite";
 import Close from "@material-ui/icons/Close";
 // core components
 import Button from "components/CustomButtons/Button.js";
+
+import styles from "assets/jss/material-dashboard-pro-react/modalStyle.js";
+
+const useStyles = makeStyles(styles);
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 function DynamicReactTable(props) {
   //  getting redux props
@@ -31,6 +46,31 @@ function DynamicReactTable(props) {
   } = props;
   //  getting component props
   const { dataRows, headers, accessors } = props.dataTable;
+
+  const handleViewChange = dataRow => {
+    refreshTable();
+    switch (viewState.curView) {
+      case "vineyardTable":
+        console.log("view block table");
+        viewBlockTable(dataRow[0]);
+        break;
+      case "blockTable":
+        console.log("view dataset table");
+        viewDatasetTable(dataRow[0]);
+        break;
+      case "datasetTable":
+        console.log("view image table");
+        viewImageTable(dataRow[6]); //access the hidden batchid
+        break;
+      default:
+        console.log("lost track");
+        break;
+    }
+  };
+
+  const classes = useStyles();
+
+  const [modal, setModal] = React.useState(false);
   const [data, setData] = React.useState(
     dataRows.map((prop, key) => {
       const dataRow = {
@@ -55,7 +95,7 @@ function DynamicReactTable(props) {
               <Favorite />
             </Button>
             {/* use this button to add a edit kind of action */}
-            {viewState.curView !== "imageTable" ? (
+            {/* {viewState.curView !== "imageTable" ? (
               <Button
                 justIcon
                 round
@@ -65,37 +105,23 @@ function DynamicReactTable(props) {
                   // alert(
                   //   "You've clicked EDIT button on \n{ \nRow: " + obj.id + "\n}."
                   // );
-                  refreshTable();
-                  switch (viewState.curView) {
-                    case "vineyardTable":
-                      console.log("view block table");
-                      viewBlockTable(prop[0]);
-                      break;
-                    case "blockTable":
-                      console.log("view dataset table");
-                      viewDatasetTable(prop[0]);
-                      break;
-                    case "datasetTable":
-                      console.log("view image table");
-                      viewImageTable(prop[6]); //access the hidden batchid
-                      break;
-                    default:
-                      console.log("loss track");
-                      break;
-                  }
+                  handleViewChange(prop);
                 }}
                 color="warning"
                 className="edit"
               >
                 <Dvr />
               </Button>
-            ) : null}
+            ) : null} */}
             {/* use this button to remove the data row */}
             <Button
               justIcon
               round
               simple
               onClick={() => {
+                //TODO
+                setModal(true);
+
                 var newData = data;
                 newData.find((o, i) => {
                   if (o.id === key) {
@@ -118,7 +144,17 @@ function DynamicReactTable(props) {
       };
       // extract the accessors from fetched data and dynamically assign to row
       accessors.map((accessor, key) => {
-        dataRow[accessor] = prop[key];
+        if (accessor === "name") {
+          let link = (
+            <Button color="success" onClick={() => handleViewChange(prop)}>
+              {prop[key]}
+            </Button>
+          );
+          dataRow[accessor] = link;
+        } else {
+          dataRow[accessor] = prop[key];
+        }
+
         return true;
       });
       // modified row
@@ -140,23 +176,74 @@ function DynamicReactTable(props) {
   });
 
   return (
-    <ReactTable
-      data={data}
-      filterable
-      columns={[
-        ...columns,
-        {
-          Header: "",
-          accessor: "actions",
-          sortable: false,
-          filterable: false
-        }
-      ]}
-      defaultPageSize={10}
-      showPaginationTop
-      showPaginationBottom={false}
-      className="-striped -highlight"
-    />
+    <div>
+      <ReactTable
+        data={data}
+        filterable
+        columns={[
+          ...columns,
+          {
+            Header: "",
+            accessor: "actions",
+            sortable: false,
+            filterable: false
+          }
+        ]}
+        defaultPageSize={10}
+        showPaginationTop
+        showPaginationBottom={false}
+        className="-striped -highlight"
+      />
+      <div>
+        <Button color="rose" round onClick={() => setModal(true)}>
+          Modal
+        </Button>
+        <Dialog
+          classes={{
+            root: classes.center,
+            paper: classes.modal
+          }}
+          open={modal}
+          transition={Transition}
+          keepMounted
+          onClose={() => setModal(false)}
+          aria-labelledby="modal-slide-title"
+          aria-describedby="modal-slide-description"
+        >
+          <DialogTitle
+            id="classic-modal-slide-title"
+            disableTypography
+            className={classes.modalHeader}
+          >
+            <Button
+              justIcon
+              className={classes.modalCloseButton}
+              key="close"
+              aria-label="Close"
+              color="transparent"
+              onClick={() => setModal(false)}
+            >
+              <Close className={classes.modalClose} />
+            </Button>
+            <h4 className={classes.modalTitle}>Modal title</h4>
+          </DialogTitle>
+          <DialogContent
+            id="modal-slide-description"
+            className={classes.modalBody}
+          >
+            <h5>Are you sure you want to do this?</h5>
+          </DialogContent>
+          <DialogActions
+            className={classes.modalFooter + " " + classes.modalFooterCenter}
+          >
+            <Button onClick={() => setModal(false)}>Never Mind</Button>
+            <Button onClick={() => setModal(false)} color="success">
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    </div>
   );
 }
 
