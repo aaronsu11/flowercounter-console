@@ -20,13 +20,16 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import Warning from "components/Typography/Warning.js";
+
 // @material-ui/icons
 // import Dvr from "@material-ui/icons/Dvr";
 import Favorite from "@material-ui/icons/Favorite";
 import Close from "@material-ui/icons/Close";
+import AddAlert from "@material-ui/icons/AddAlert";
 // core components
 import Button from "components/CustomButtons/Button.js";
+import Snackbars from "components/Snackbar/Snackbar.js";
+import Warning from "components/Typography/Warning.js";
 
 import styles from "assets/jss/material-dashboard-pro-react/modalStyle.js";
 
@@ -50,64 +53,16 @@ function DynamicReactTable(props) {
   //  getting component props
   const { dataRows, headers, accessors } = props.dataTable;
 
-  const handleViewChange = dataRow => {
-    refreshTable();
-    switch (curView) {
-      case "vineyardTable":
-        console.log("view block table");
-        viewBlockTable(dataRow[0]);
-        break;
-      case "blockTable":
-        console.log("view dataset table");
-        viewDatasetTable(dataRow[0]);
-        break;
-      case "datasetTable":
-        console.log("view image table");
-        viewImageTable(dataRow[6]); //access the hidden batchid
-        break;
-      default:
-        console.log("lost track");
-        break;
-    }
-  };
-
-  const handleDelete = () => {
-    if (dataRows[rowKey]) {
-      // Delete table row display
-      let newData = data;
-      newData.find((o, i) => {
-        if (o.id === rowKey) {
-          // here you should add some custom code so you can delete the data
-          // from this component and from your server as well
-          newData.splice(i, 1);
-          return true;
-        }
-        return false;
-      });
-      setData([...newData]);
-      // Delete record on server
-      let i = accessors.indexOf("name");
-      let id =
-        curView === "datasetTable" ? dataRows[rowKey][6] : dataRows[rowKey][i];
-      let target = {
-        uid: auth.uid,
-        type: curView.split("T", 1)[0],
-        vineyard: curVineyard,
-        block: curBlock,
-        dataset: curDataset,
-        name: id
-      };
-      deleteRecord(target);
-    } else {
-      alert("Error, reloading");
-      refreshTable();
-    }
-    setModal(false);
-  };
-
-  const classes = useStyles();
+  const columns = headers.map((header, key) => {
+    // console.log(header.replace(/^\w/, c => c.toUpperCase()));
+    return {
+      Header: header,
+      accessor: accessors[key]
+    };
+  });
 
   const [modal, setModal] = React.useState(false);
+  const [tl, setTl] = React.useState(false);
   const [rowKey, setRowKey] = React.useState();
   const [data, setData] = React.useState(
     dataRows.map((prop, key) => {
@@ -122,10 +77,16 @@ function DynamicReactTable(props) {
               round
               simple
               onClick={() => {
-                let obj = data.find(o => o.id === key);
-                alert(
-                  "You've clicked LIKE button on \n{ \nRow: " + obj.id + "\n}."
-                );
+                // let obj = data.find(o => o.id === key);
+                // alert(
+                //   "You've clicked LIKE button on \n{ \nRow: " + obj.id + "\n}."
+                // );
+                setTl(true);
+                setRowKey(key);
+                // use this to make the notification autoclose
+                setTimeout(() => {
+                  setTl(false);
+                }, 6000);
               }}
               color="info"
               className="like"
@@ -187,19 +148,63 @@ function DynamicReactTable(props) {
       return dataRow;
     })
   );
-  // useEffect(() => {
-  //   console.log("Mount");
-  //   return () => {
-  //     console.log("Unmount");
-  //   };
-  // }, []);
-  const columns = headers.map((header, key) => {
-    // console.log(header.replace(/^\w/, c => c.toUpperCase()));
-    return {
-      Header: header,
-      accessor: accessors[key]
-    };
-  });
+
+  const classes = useStyles();
+
+  const handleViewChange = dataRow => {
+    refreshTable();
+    switch (curView) {
+      case "vineyardTable":
+        console.log("view block table");
+        viewBlockTable(dataRow[0]);
+        break;
+      case "blockTable":
+        console.log("view dataset table");
+        viewDatasetTable(dataRow[0]);
+        break;
+      case "datasetTable":
+        console.log("view image table");
+        viewImageTable(dataRow[6]); //access the hidden batchid
+        break;
+      default:
+        console.log("lost track");
+        break;
+    }
+  };
+
+  const handleDelete = () => {
+    if (dataRows[rowKey]) {
+      // Delete table row display
+      let newData = data;
+      newData.find((o, i) => {
+        if (o.id === rowKey) {
+          // here you should add some custom code so you can delete the data
+          // from this component and from your server as well
+          newData.splice(i, 1);
+          return true;
+        }
+        return false;
+      });
+      setData([...newData]);
+      // Delete record on server
+      let i = accessors.indexOf("name");
+      let id =
+        curView === "datasetTable" ? dataRows[rowKey][6] : dataRows[rowKey][i];
+      let target = {
+        uid: auth.uid,
+        type: curView.split("T", 1)[0],
+        vineyard: curVineyard,
+        block: curBlock,
+        dataset: curDataset,
+        name: id
+      };
+      deleteRecord(target);
+    } else {
+      alert("Error, reloading");
+      refreshTable();
+    }
+    setModal(false);
+  };
 
   return (
     <div>
@@ -220,60 +225,69 @@ function DynamicReactTable(props) {
         showPaginationBottom={false}
         className="-striped -highlight"
       />
-      <div>
-        {/* <Button color="rose" round onClick={() => setModal(true)}>
-          Modal
-        </Button> */}
-        <Dialog
-          classes={{
-            root: classes.center,
-            paper: classes.modal
-          }}
-          open={modal}
-          transition={Transition}
-          keepMounted
-          onClose={() => setModal(false)}
-          aria-labelledby="modal-slide-title"
-          aria-describedby="modal-slide-description"
+      {/* Notification popup here */}
+      <Snackbars
+        place="br"
+        color="info"
+        icon={AddAlert}
+        message={`You just marked ${curView.split("T", 1)}
+            ${
+              dataRows[rowKey] ? dataRows[rowKey][0] : null
+            }. More functionalities coming soon!`}
+        open={tl}
+        closeNotification={() => setTl(false)}
+        close
+      />
+      {/* Confirmation modal popup here */}
+      <Dialog
+        classes={{
+          root: classes.center,
+          paper: classes.modal
+        }}
+        open={modal}
+        transition={Transition}
+        keepMounted
+        onClose={() => setModal(false)}
+        aria-labelledby="modal-slide-title"
+        aria-describedby="modal-slide-description"
+      >
+        <DialogTitle
+          id="classic-modal-slide-title"
+          disableTypography
+          className={classes.modalHeader}
         >
-          <DialogTitle
-            id="classic-modal-slide-title"
-            disableTypography
-            className={classes.modalHeader}
+          <Button
+            justIcon
+            className={classes.modalCloseButton}
+            key="close"
+            aria-label="Close"
+            color="transparent"
+            onClick={() => setModal(false)}
           >
-            <Button
-              justIcon
-              className={classes.modalCloseButton}
-              key="close"
-              aria-label="Close"
-              color="transparent"
-              onClick={() => setModal(false)}
-            >
-              <Close className={classes.modalClose} />
-            </Button>
-            <Warning>
-              <h3 className={classes.modalTitle}>Warning</h3>
-            </Warning>
-          </DialogTitle>
-          <DialogContent
-            id="modal-slide-description"
-            className={classes.modalBody}
-          >
-            <h5>
-              Are you sure you want to delete {curView.split("T", 1)}{" "}
-              <b>{dataRows[rowKey] ? dataRows[rowKey][0] : null}</b>?
-            </h5>
-          </DialogContent>
-          <DialogActions
-            className={classes.modalFooter + " " + classes.modalFooterCenter}
-          >
-            <Button onClick={() => setModal(false)}>Never Mind</Button>
-            <Button onClick={() => handleDelete()} color="warning" simple>
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+            <Close className={classes.modalClose} />
+          </Button>
+          <Warning>
+            <h3 className={classes.modalTitle}>Warning</h3>
+          </Warning>
+        </DialogTitle>
+        <DialogContent
+          id="modal-slide-description"
+          className={classes.modalBody}
+        >
+          <h5>
+            Are you sure you want to delete {curView.split("T", 1)}{" "}
+            <b>{dataRows[rowKey] ? dataRows[rowKey][0] : null}</b>?
+          </h5>
+        </DialogContent>
+        <DialogActions
+          className={classes.modalFooter + " " + classes.modalFooterCenter}
+        >
+          <Button onClick={() => setModal(false)}>Never Mind</Button>
+          <Button onClick={() => handleDelete()} color="warning" simple>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

@@ -32,6 +32,13 @@ export const getVineyardTableAction = token => async dispatch => {
         type: "getVineyardTable",
         payload: dataTable || {}
       });
+    })
+    .catch(error => {
+      alert(error);
+      dispatch({
+        type: "tableGetError",
+        error
+      });
     });
 
   // call firebase API to retrieve all stats card
@@ -68,6 +75,13 @@ export const getBlockTableAction = (token, vineyard) => async dispatch => {
         type: "getBlockTable",
         payload: dataTable || {}
       });
+    })
+    .catch(error => {
+      alert(error);
+      dispatch({
+        type: "tableGetError",
+        error
+      });
     });
 };
 
@@ -98,6 +112,13 @@ export const getDatasetTableAction = (
       dispatch({
         type: "getDatasetTable",
         payload: dataTable || {}
+      });
+    })
+    .catch(error => {
+      alert(error);
+      dispatch({
+        type: "tableGetError",
+        error
       });
     });
 };
@@ -145,6 +166,13 @@ export const getImageTableAction = (
         type: "getImageTable",
         payload: imageTable || {}
       });
+    })
+    .catch(error => {
+      alert(error);
+      dispatch({
+        type: "tableGetError",
+        error
+      });
     });
 };
 
@@ -165,6 +193,13 @@ export const deleteRecordAction = target => async dispatch => {
       dispatch({
         type: "deleteRecord",
         payload: target.name
+      });
+    })
+    .catch(error => {
+      alert(error);
+      dispatch({
+        type: "tableDeleteError",
+        error
       });
     });
 };

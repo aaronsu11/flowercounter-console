@@ -7,7 +7,8 @@ import PropTypes from "prop-types";
 import {
   viewVineyardTableAction,
   viewBlockTableAction,
-  viewDatasetTableAction
+  viewDatasetTableAction,
+  viewImageTableAction
 } from "actions/viewActions";
 import { refreshTableAction } from "actions/tableActions";
 
@@ -22,7 +23,8 @@ function DynamicBreadcrumbs(props) {
     refreshTable,
     viewVineyardTable,
     viewBlockTable,
-    viewDatasetTable
+    viewDatasetTable,
+    viewImageTable
   } = props;
   const { curView } = viewState;
 
@@ -51,6 +53,10 @@ function DynamicBreadcrumbs(props) {
       case "dataset":
         console.log("view dataset table");
         viewDatasetTable(viewState.curBlock);
+        break;
+      case "image":
+        console.log("view image table");
+        viewImageTable(viewState.curDataset);
         break;
       default:
         console.log("loss track");
@@ -96,10 +102,10 @@ function DynamicBreadcrumbs(props) {
           color="inherit"
           href="/"
           onClick={e => {
-            handleClick(e, "dataset");
+            handleClick(e, "image");
           }}
         >
-          {viewState.curDataset}
+          DS{viewState.curDataset}
         </Link>
       ) : null}
       <Typography color="textPrimary">{tableTitle}</Typography>
@@ -112,7 +118,8 @@ DynamicBreadcrumbs.propTypes = {
   refreshTable: PropTypes.func,
   viewVineyardTable: PropTypes.func,
   viewBlockTable: PropTypes.func,
-  viewDatasetTable: PropTypes.func
+  viewDatasetTable: PropTypes.func,
+  viewImageTable: PropTypes.func
 };
 
 const mapStateToProps = state => ({ ...state });
@@ -120,7 +127,8 @@ const mapDispatchToProps = dispatch => ({
   refreshTable: () => dispatch(refreshTableAction()),
   viewVineyardTable: () => dispatch(viewVineyardTableAction()),
   viewBlockTable: vineyard => dispatch(viewBlockTableAction(vineyard)),
-  viewDatasetTable: block => dispatch(viewDatasetTableAction(block))
+  viewDatasetTable: block => dispatch(viewDatasetTableAction(block)),
+  viewImageTable: dataset => dispatch(viewImageTableAction(dataset))
 });
 
 export default connect(

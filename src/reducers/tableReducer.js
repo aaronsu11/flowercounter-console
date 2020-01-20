@@ -18,6 +18,10 @@ export default (state = {}, action) => {
     case "getImageTable":
       console.log("getting ", action.payload);
       return { ...state, dataTable: action.payload };
+    case "tableGetError":
+      return { ...state, tableError: action.error };
+    case "tableDeleteError":
+      return { ...state, tableError: action.error };
     default:
       return state;
   }

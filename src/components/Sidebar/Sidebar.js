@@ -393,10 +393,10 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "مع" : "MP"}
+                      {rtlActive ? "مع" : "CS"}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "ملفي" : "My Profile"}
+                      primary={rtlActive ? "ملفي" : "Coming Soon..."}
                       disableTypography={true}
                       className={collapseItemText}
                     />
@@ -421,7 +421,7 @@ class Sidebar extends React.Component {
                     />
                   </NavLink>
                 </ListItem> */}
-                <ListItem className={classes.collapseItem}>
+                {/* <ListItem className={classes.collapseItem}>
                   <NavLink
                     to="#"
                     className={
@@ -437,7 +437,7 @@ class Sidebar extends React.Component {
                       className={collapseItemText}
                     />
                   </NavLink>
-                </ListItem>
+                </ListItem> */}
               </List>
             </Collapse>
           </ListItem>

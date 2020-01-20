@@ -20,12 +20,13 @@ import Divider from "@material-ui/core/Divider";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 // import Notifications from "@material-ui/icons/Notifications";
-import Dashboard from "@material-ui/icons/Dashboard";
+// import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
+import Badge from "components/Badge/Badge.js";
 
 import styles from "assets/jss/material-dashboard-pro-react/components/adminNavbarLinksStyle.js";
 
@@ -69,7 +70,7 @@ function HeaderLinks(props) {
     classNames({
       [classes.searchRTL]: rtlActive
     });
-  const dropdownItem = classNames(classes.dropdownItem, classes.primaryHover, {
+  const dropdownItem = classNames(classes.dropdownItem, classes.successHover, {
     [classes.dropdownItemRTL]: rtlActive
   });
   const wrapper = classNames({
@@ -81,6 +82,7 @@ function HeaderLinks(props) {
   return (
     <div className={wrapper}>
       <CustomInput
+        success
         rtlActive={rtlActive}
         formControlProps={{
           className: classes.top + " " + classes.search
@@ -102,7 +104,7 @@ function HeaderLinks(props) {
       >
         <Search className={classes.headerLinksSvg + " " + classes.searchIcon} />
       </Button>
-      <Button
+      {/* <Button
         color="transparent"
         simple
         aria-label="Dashboard"
@@ -111,6 +113,7 @@ function HeaderLinks(props) {
         muiClasses={{
           label: rtlActive ? classes.labelRTL : ""
         }}
+        href="dashboard"
       >
         <Dashboard
           className={
@@ -124,7 +127,7 @@ function HeaderLinks(props) {
             {rtlActive ? "لوحة القيادة" : "Dashboard"}
           </span>
         </Hidden>
-      </Button>
+      </Button> */}
       {/* <div className={managerClasses}>
         <Button
           color="transparent"
@@ -246,7 +249,7 @@ function HeaderLinks(props) {
           />
           <Hidden mdUp implementation="css">
             <span onClick={handleClickProfile} className={classes.linkText}>
-              {rtlActive ? "الملف الشخصي" : "Profile"}
+              {rtlActive ? "الملف الشخصي" : "Settings"}
             </span>
           </Hidden>
         </Button>
@@ -275,14 +278,20 @@ function HeaderLinks(props) {
                       onClick={handleCloseProfile}
                       className={dropdownItem}
                     >
-                      {rtlActive ? "الملف الشخصي" : "Profile"}
+                      {rtlActive ? (
+                        "الملف الشخصي"
+                      ) : (
+                        <span>
+                          Profile <Badge color="gray">Soon</Badge>
+                        </span>
+                      )}
                     </MenuItem>
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={handleCloseProfile}
                       className={dropdownItem}
                     >
                       {rtlActive ? "الإعدادات" : "Settings"}
-                    </MenuItem>
+                    </MenuItem> */}
                     <Divider light />
                     <MenuItem
                       onClick={handleClickLogout}
