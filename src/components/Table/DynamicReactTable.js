@@ -8,7 +8,7 @@ import {
   viewDatasetTableAction,
   viewImageTableAction
 } from "actions/viewActions";
-import { refreshTableAction } from "actions/tableActions";
+import { refreshTableAction, deleteRecordAction } from "actions/tableActions";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -20,6 +20,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import Warning from "components/Typography/Warning.js";
 // @material-ui/icons
 // import Dvr from "@material-ui/icons/Dvr";
 import Favorite from "@material-ui/icons/Favorite";
@@ -39,7 +40,9 @@ function DynamicReactTable(props) {
   //  getting redux props
   const {
     viewState,
+    firebase: { auth },
     refreshTable,
+    deleteRecord,
     viewBlockTable,
     viewDatasetTable,
     viewImageTable
@@ -68,9 +71,33 @@ function DynamicReactTable(props) {
     }
   };
 
+  const handleDelete = () => {
+    console.log(dataRows[rowKey]);
+    let newData = data;
+    newData.find((o, i) => {
+      if (o.id === rowKey) {
+        // here you should add some custom code so you can delete the data
+        // from this component and from your server as well
+        newData.splice(i, 1);
+        return true;
+      }
+      return false;
+    });
+    setData([...newData]);
+    //TODO
+    let target = {
+      uid: auth.uid,
+      type: viewState.curView,
+      name: dataRows[rowKey][0]
+    };
+    deleteRecord(target);
+    setModal(false);
+  };
+
   const classes = useStyles();
 
   const [modal, setModal] = React.useState(false);
+  const [rowKey, setRowKey] = React.useState();
   const [data, setData] = React.useState(
     dataRows.map((prop, key) => {
       const dataRow = {
@@ -119,20 +146,8 @@ function DynamicReactTable(props) {
               round
               simple
               onClick={() => {
-                //TODO
                 setModal(true);
-
-                var newData = data;
-                newData.find((o, i) => {
-                  if (o.id === key) {
-                    // here you should add some custom code so you can delete the data
-                    // from this component and from your server as well
-                    newData.splice(i, 1);
-                    return true;
-                  }
-                  return false;
-                });
-                setData([...newData]);
+                setRowKey(key);
               }}
               color="danger"
               className="remove"
@@ -195,9 +210,9 @@ function DynamicReactTable(props) {
         className="-striped -highlight"
       />
       <div>
-        <Button color="rose" round onClick={() => setModal(true)}>
+        {/* <Button color="rose" round onClick={() => setModal(true)}>
           Modal
-        </Button>
+        </Button> */}
         <Dialog
           classes={{
             root: classes.center,
@@ -225,19 +240,24 @@ function DynamicReactTable(props) {
             >
               <Close className={classes.modalClose} />
             </Button>
-            <h4 className={classes.modalTitle}>Modal title</h4>
+            <Warning>
+              <h3 className={classes.modalTitle}>Warning</h3>
+            </Warning>
           </DialogTitle>
           <DialogContent
             id="modal-slide-description"
             className={classes.modalBody}
           >
-            <h5>Are you sure you want to do this?</h5>
+            <h5>
+              Are you sure you want to delete {viewState.curView.split("T", 1)}{" "}
+              <b>{dataRows[rowKey] ? dataRows[rowKey][0] : null}</b>?
+            </h5>
           </DialogContent>
           <DialogActions
             className={classes.modalFooter + " " + classes.modalFooterCenter}
           >
             <Button onClick={() => setModal(false)}>Never Mind</Button>
-            <Button onClick={() => setModal(false)} color="success">
+            <Button onClick={() => handleDelete()} color="warning" simple>
               Yes
             </Button>
           </DialogActions>
@@ -254,7 +274,9 @@ DynamicReactTable.defaultProps = {
 DynamicReactTable.propTypes = {
   dataTable: PropTypes.object,
   viewState: PropTypes.object,
+  firebase: PropTypes.object,
   refreshTable: PropTypes.func,
+  deleteRecord: PropTypes.func,
   viewBlockTable: PropTypes.func,
   viewDatasetTable: PropTypes.func,
   viewImageTable: PropTypes.func
@@ -263,6 +285,7 @@ DynamicReactTable.propTypes = {
 const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => ({
   refreshTable: () => dispatch(refreshTableAction()),
+  deleteRecord: id => dispatch(deleteRecordAction(id)),
   viewBlockTable: vineyard => dispatch(viewBlockTableAction(vineyard)),
   viewDatasetTable: block => dispatch(viewDatasetTableAction(block)),
   viewImageTable: dataset => dispatch(viewImageTableAction(dataset))

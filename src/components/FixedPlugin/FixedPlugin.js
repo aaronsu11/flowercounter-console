@@ -266,15 +266,15 @@ export default function FixedPlugin(props) {
             <div>
               <Button
                 color="warning"
-                href="https://www.creative-tim.com/product/material-dashboard-pro-react?ref=mdpr-fixed-plugin"
+                href="http://www.robotics.unsw.edu.au/srv/contact.html"
                 target="_blank"
                 fullWidth
               >
-                Buy now
+                Contact us now
               </Button>
             </div>
           </li>
-          <li className="button-container">
+          {/* <li className="button-container">
             <div>
               <Button
                 color="warning"
@@ -285,10 +285,9 @@ export default function FixedPlugin(props) {
                 Buy now
               </Button>
             </div>
-          </li>
+          </li> */}
           <li className="header-title" id="sharrreTitle">
-            Thank you for sharing!
-            <br />
+          UNSW AUSTRALIA
           </li>
         </ul>
       </div>

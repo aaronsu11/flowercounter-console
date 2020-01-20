@@ -3,6 +3,9 @@ export default (state = {}, action) => {
     case "refreshTable":
       console.log("refresh table");
       return { ...state, dataTable: null };
+    case "deleteRecord":
+      console.log("delete record from table");
+      return state;
     case "getVineyardTable":
       console.log("getting ", action.payload);
       return { ...state, dataTable: action.payload };
