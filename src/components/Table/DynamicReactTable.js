@@ -30,6 +30,7 @@ import AddAlert from "@material-ui/icons/AddAlert";
 import Button from "components/CustomButtons/Button.js";
 import Snackbars from "components/Snackbar/Snackbar.js";
 import Warning from "components/Typography/Warning.js";
+import Success from "components/Typography/Success.js";
 
 import styles from "assets/jss/material-dashboard-pro-react/modalStyle.js";
 
@@ -40,6 +41,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function DynamicReactTable(props) {
+  const classes = useStyles();
   //  getting redux props
   const {
     viewState: { curView, curVineyard, curBlock, curDataset },
@@ -132,11 +134,16 @@ function DynamicReactTable(props) {
       // extract the accessors from fetched data and dynamically assign to row
       accessors.map((accessor, key) => {
         if (accessor === "name") {
-          let link = (
-            <Button color="success" onClick={() => handleViewChange(prop)}>
-              {prop[key]}
-            </Button>
-          );
+          let link =
+            curView === "imageTable" ? (
+              <Success>
+                <b>{prop[key]}</b>
+              </Success>
+            ) : (
+              <Button color="success" onClick={() => handleViewChange(prop)}>
+                {prop[key]}
+              </Button>
+            );
           dataRow[accessor] = link;
         } else {
           dataRow[accessor] = prop[key];
@@ -148,8 +155,6 @@ function DynamicReactTable(props) {
       return dataRow;
     })
   );
-
-  const classes = useStyles();
 
   const handleViewChange = dataRow => {
     refreshTable();
