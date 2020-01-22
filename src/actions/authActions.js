@@ -28,7 +28,7 @@ export const registerAction = (source, name, email, password) => async (
       });
     })
     .catch(error => {
-      alert(error);
+      // alert(error);
       dispatch({
         type: "registerError",
         error

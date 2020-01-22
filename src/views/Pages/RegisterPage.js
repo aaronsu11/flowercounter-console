@@ -21,6 +21,7 @@ import Face from "@material-ui/icons/Face";
 import Email from "@material-ui/icons/Email";
 // import LockOutline from "@material-ui/icons/LockOutline";
 import Check from "@material-ui/icons/Check";
+import ErrorOutline from "@material-ui/icons/ErrorOutline";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
@@ -30,20 +31,33 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import InfoArea from "components/InfoArea/InfoArea.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import Snackbars from "components/Snackbar/Snackbar.js";
 
 import styles from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
 
 const useStyles = makeStyles(styles);
 
 function RegisterPage(props) {
+  const {
+    authState: { authError }
+  } = props;
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [checked, setChecked] = React.useState([]);
+  const [error, setError] = React.useState("");
+  const [tl, setTl] = React.useState(false);
   // Parse URL query or default to "console"
   const [source] = React.useState(
     queryString.parse(props.location.search).source || "console"
   );
+
+  React.useEffect(() => {
+    if (authError) {
+      setError(authError.message);
+      setTl(true);
+    }
+  }, [authError]);
   const handleToggle = value => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -65,8 +79,35 @@ function RegisterPage(props) {
   const onPasswordChange = password => {
     setPassword(password);
   };
+  const validateForm = () => {
+    if (!name) {
+      setError("Please fill in your name");
+      return false;
+    }
+    if (!email) {
+      setError("Please fill in your email");
+      return false;
+    }
+    if (!password) {
+      setError("Please fill in your password");
+      return false;
+    }
+    if (!checked[0]) {
+      setError("Please agree to Terms and Conditions");
+      return false;
+    }
+    return true;
+  };
   return (
     <div className={classes.container}>
+      <Snackbars
+        place="bc"
+        color="danger"
+        message={error}
+        open={tl}
+        closeNotification={() => setTl(false)}
+        close
+      />
       <GridContainer justify="center">
         <GridItem xs={12} sm={12} md={10}>
           <Card className={classes.cardSignup}>
@@ -152,6 +193,7 @@ function RegisterPage(props) {
                         className: classes.customFormControlClasses
                       }}
                       inputProps={{
+                        type: "password",
                         onChange: e => onPasswordChange(e.target.value),
                         startAdornment: (
                           <InputAdornment
@@ -197,10 +239,11 @@ function RegisterPage(props) {
                         round
                         color="primary"
                         onClick={() => {
-                          if (checked) {
+                          if (validateForm()) {
+                            // console.log("Good");
                             props.register(source, name, email, password);
                           } else {
-                            alert("Please agree to the terms and conditions");
+                            setTl(true);
                           }
                         }}
                       >
@@ -212,6 +255,15 @@ function RegisterPage(props) {
               </GridContainer>
             </CardBody>
           </Card>
+          <Snackbars
+            place="bc"
+            color="danger"
+            icon={ErrorOutline}
+            message={error}
+            open={tl}
+            closeNotification={() => setTl(false)}
+            close
+          />
         </GridItem>
       </GridContainer>
     </div>
@@ -219,6 +271,7 @@ function RegisterPage(props) {
 }
 
 RegisterPage.propTypes = {
+  authState: PropTypes.object,
   register: PropTypes.func,
   location: PropTypes.object
 };

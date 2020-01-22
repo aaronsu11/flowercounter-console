@@ -59,7 +59,8 @@ function DynamicReactTable(props) {
     // console.log(header.replace(/^\w/, c => c.toUpperCase()));
     return {
       Header: header,
-      accessor: accessors[key]
+      accessor: accessors[key],
+      filterable: accessors[key] !== "name"
     };
   });
 
