@@ -22,13 +22,14 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 // import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
+import CameraAlt from "@material-ui/icons/CameraAlt";
 // import ContentCopy from "@material-ui/icons/ContentCopy";
 // import Store from "@material-ui/icons/Store";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
 // import Warning from "@material-ui/icons/Warning";
 // import DateRange from "@material-ui/icons/DateRange";
 // import LocalOffer from "@material-ui/icons/LocalOffer";
-import Update from "@material-ui/icons/Update";
+// import Update from "@material-ui/icons/Update";
 // import ArrowUpward from "@material-ui/icons/ArrowUpward";
 // import AccessTime from "@material-ui/icons/AccessTime";
 // import Refresh from "@material-ui/icons/Refresh";
@@ -105,8 +106,7 @@ function Dashboard(props) {
                   </CardBody>
                   <CardFooter stats>
                     <div className={classes.stats}>
-                      <Update />
-                      {latestRecord}
+                      <CameraAlt /> Latest Dataset: {latestRecord}
                     </div>
                   </CardFooter>
                 </Card>

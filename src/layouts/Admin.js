@@ -13,11 +13,15 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
+// @material-ui/icon
+import CloudUploadOutlined from "@material-ui/icons/CloudUploadOutlined";
+
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
+import Button from "components/CustomButtons/Button.js";
 
 import routes from "routes.js";
 
@@ -192,6 +196,10 @@ function Admin(props) {
         {getRoute() ? (
           <div className={classes.content}>
             <div className={classes.container}>
+              <Button simple color="success" href={userHomeURL}>
+                <CloudUploadOutlined className={classes.icons} /> Upload more
+                datasets here...
+              </Button>
               <Switch>
                 <Route
                   exact

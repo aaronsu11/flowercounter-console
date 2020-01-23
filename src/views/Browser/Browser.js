@@ -52,7 +52,7 @@ function Browser(props) {
     firebase: { auth },
     tableState,
     viewState,
-    // refreshTable,
+    refreshTable,
     getVineyardTable,
     getBlockTable,
     getDatasetTable,
@@ -62,7 +62,9 @@ function Browser(props) {
   const [firstMount, setMount] = useState(true);
   useEffect(() => {
     setMount(false);
-  }, []);
+    refreshTable();
+    return () => refreshTable();
+  }, [refreshTable]);
 
   useEffect(() => {
     let token = auth.uid;
